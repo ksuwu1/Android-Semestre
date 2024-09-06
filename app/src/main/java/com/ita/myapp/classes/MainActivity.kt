@@ -21,9 +21,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ita.myapp.classes.ui.theme.Myapp2Theme
 
 class MainActivity : ComponentActivity() {
@@ -31,48 +40,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent { //Lo que se imprime en pantalla
-
             Column(
-                modifier= Modifier.fillMaxSize(), //De esa columna ocupa todo el espacio
-                verticalArrangement = Arrangement.Center, //Donde lo quieres alinear de forma vertical
-                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally //Centrarlo horizontalmente
-            ){
-                Text(text = "Simple Text")
-                ModifierExample()
-                ModifierExample2()
-                ModifierExample3()
+                modifier = Modifier.fillMaxSize(), //De esa columna ocupa todo el espacio
+                verticalArrangement = Arrangement.Center, //Alinear verticalmente
+                horizontalAlignment = Alignment.CenterHorizontally //Centrar horizontalmente
+            ) {
+                CustomText()
+                Picture()
             }
-
-
-            //layouts
-            /*Column{ //The main component // Solo se pone una vez
-                Text(text="First Row")
-                Text(text="Second Row")
-                Text(text="Third Row")
-                Row{
-                    Text(text="TEXT 1")
-                    Text(text = "TEXT1")
-                    Text(text = "TEXT1")
-                    Text(text = "TEXT1")
-                    Text(text = "TEXT1")
-                    Text(text = "TEXT1")
-
-                }
-                Box{ //Encima los elementos
-                    Text(text = "Label 1")
-                    Text(text = "Label 2")
-                }
-                Greeting(name = "World")
-            }
-//            Myapp2Theme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    Greeting(
-//                        name = "Android",
-//                        modifier = Modifier.padding(innerPadding)
-//                    )
-//
-    }
-//            }*/
         }
     }
 }
@@ -87,7 +62,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true) //Si este se modifica, se muestra en tiempo real
+@Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Myapp2Theme {
@@ -97,56 +72,83 @@ fun GreetingPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ModifierExample(){
+fun ModifierExample() {
     Column(
-        modifier=Modifier
+        modifier = Modifier
             .padding(24.dp) //dp es la medida en android
-
-
-    ){
-        Text(text="Hello World")
-
+    ) {
+        Text(text = "Hello World")
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
-fun ModifierExample2(){
+fun ModifierExample2() {
     Column(
-        modifier= Modifier
-            .padding(24.dp) //dp es la medida en android
+        modifier = Modifier
+            .padding(24.dp)
             .fillMaxWidth()
             .clickable(onClick = { clickAction() }) //Evento de click
-    ){
-        Text(text="Hello World")
-
+    ) {
+        Text(text = "Hello World")
     }
 }
 
-fun clickAction(){
+fun clickAction() {
     println("Column Clicked")
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ModifierExample3(){
+fun ModifierExample3() {
     Column(
         modifier = Modifier
-            .fillMaxHeight() //Ocupa todo el ancho
+            .fillMaxHeight()
             .padding(16.dp)
-            .background(Color.Cyan) // Color de la columna
+            .background(Color.Cyan)
             .border(width = 2.dp, color = Color.Green)
             .width(200.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, //Propias de Android Compose
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
-    ){
+    ) {
         Text(text = "Item 1")
         Text(text = "Item 2")
         Text(text = "Item 3")
         Text(text = "Item 4")
         Text(text = "Item 5")
     }
+}
 
+@Composable
+fun CustomText() {
+    Column {
+        Text(
+            text = stringResource(R.string.Hello_World_Text),
+            color = colorResource(R.color.purple_700),
+            fontSize = 28.sp,
+            fontStyle = FontStyle.Italic,
+            fontWeight = FontWeight.ExtraBold
+        )
+        val gradientColors = listOf(Color.Cyan, Color.Blue)
+        Text(
+            text = stringResource(R.string.Hello_World_Text),
+            style = TextStyle(brush = Brush.linearGradient(gradientColors))
+        )
+    }
+}
 
+@Composable
+fun Picture() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black)
+    ) {
+        androidx.compose.foundation.Image(
+            modifier = Modifier.fillMaxWidth(),
+            painter = painterResource(R.drawable.androidlogo),
+            contentDescription = "Logo Android",
+            contentScale = ContentScale.Crop
+        )
+    }
 }
