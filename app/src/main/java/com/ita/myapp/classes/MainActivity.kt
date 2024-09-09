@@ -3,7 +3,7 @@ package com.ita.myapp.classes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,24 +42,26 @@ import com.ita.myapp.classes.ui.theme.Myapp2Theme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent { //Lo que se imprime en pantalla
+        setContent { // Lo que se imprime en pantalla
             Column(
-                modifier = Modifier.fillMaxSize(), //De esa columna ocupa todo el espacio
-                verticalArrangement = Arrangement.Center, //Alinear verticalmente
-                horizontalAlignment = Alignment.CenterHorizontally //Centrar horizontalmente
+                modifier = Modifier
+                    .fillMaxSize() // La columna ocupa todo el espacio
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Center, // Alinear verticalmente
+                horizontalAlignment = Alignment.CenterHorizontally // Centrar horizontalmente
             ) {
                 CustomText()
                 Picture()
+                Content1()
+                Content2()
             }
         }
     }
 }
 
-//Cada Composable es un elemento visible
-@Composable //Fragmento o componente de diseño
+// Cada Composable es un elemento visible
+@Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    //Modifier te permite acceder a ciertas propiedades de los elementos
     Text(
         text = "Hello $name!",
         modifier = modifier
@@ -74,48 +80,9 @@ fun GreetingPreview() {
 @Composable
 fun ModifierExample() {
     Column(
-        modifier = Modifier
-            .padding(24.dp) //dp es la medida en android
+        modifier = Modifier.padding(24.dp) // dp es la medida en Android
     ) {
         Text(text = "Hello World")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample2() {
-    Column(
-        modifier = Modifier
-            .padding(24.dp)
-            .fillMaxWidth()
-            .clickable(onClick = { clickAction() }) //Evento de click
-    ) {
-        Text(text = "Hello World")
-    }
-}
-
-fun clickAction() {
-    println("Column Clicked")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ModifierExample3() {
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(16.dp)
-            .background(Color.Cyan)
-            .border(width = 2.dp, color = Color.Green)
-            .width(200.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
-    ) {
-        Text(text = "Item 1")
-        Text(text = "Item 2")
-        Text(text = "Item 3")
-        Text(text = "Item 4")
-        Text(text = "Item 5")
     }
 }
 
@@ -144,11 +111,100 @@ fun Picture() {
             .fillMaxWidth()
             .background(Color.Black)
     ) {
-        androidx.compose.foundation.Image(
+        Image(
             modifier = Modifier.fillMaxWidth(),
             painter = painterResource(R.drawable.androidlogo),
             contentDescription = "Logo Android",
             contentScale = ContentScale.Crop
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Content1() {
+    Card(
+        modifier = Modifier
+            .background(Color.LightGray)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Text(
+                text = "This is a title",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                painter = painterResource(id = R.drawable.androidlogo),
+                contentDescription = "Android Logo",
+                contentScale = ContentScale.Crop
+            )
+
+            Text(text = "Test")
+
+            Text(
+                text = stringResource(R.string.uwu),
+                textAlign = TextAlign.Justify,
+                lineHeight = 10.sp,
+                modifier = Modifier
+                    .padding(10.dp)
+            )
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun Content2() {
+    Card(
+        modifier = Modifier
+            .background(Color.LightGray)
+            .fillMaxWidth()
+            .padding(5.dp)
+    ) {
+        Row( // Usamos Row para alinear horizontalmente
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically // Alinear elementos verticalmente
+        ) {
+            Image(
+                modifier = Modifier
+
+                    .padding(end = 10.dp), // Espacio entre la imagen y los textos
+                painter = painterResource(id = R.drawable.androidlogo),
+                contentDescription = "Android Logo",
+                contentScale = ContentScale.Crop
+            )
+
+            // Los textos alineados a la derecha de la imagen
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(), // Ocupar el ancho restante
+                verticalArrangement = Arrangement.Center // Centrar verticalmente los textos
+            ) {
+                Text(
+                    text = "This is a title",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 5.dp)
+                )
+                Text(text = "Test")
+
+                Text(
+                    text = stringResource(R.string.uwu),
+                    textAlign = TextAlign.Justify,
+                    lineHeight = 10.sp,
+                    modifier = Modifier
+                        .padding(top = 5.dp)
+                )
+            }
+        }
     }
 }
