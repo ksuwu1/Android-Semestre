@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -76,7 +77,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     Myapp2Theme {
-        Greeting("Tony")
+        Greeting("Cass")
     }
 }
 
@@ -165,50 +166,44 @@ fun Content1() {
 }
 @Preview(showBackground = true)
 @Composable
-fun Content2() {
+fun Content2(){
     Card(
         modifier = Modifier
             .background(Color.LightGray)
             .fillMaxWidth()
-            .padding(5.dp)
+            .padding(10.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween // Espacio entre imagen y textos
+                .padding(20.dp)
         ) {
             // Imagen a la izquierda
             Image(
-                modifier = Modifier
-                    .padding(end = 10.dp), // Espacio entre la imagen y los textos
                 painter = painterResource(id = R.drawable.androidlogo),
-                contentDescription = "Android Logo",
+                contentDescription = "Android logo",
+                modifier = Modifier
+                    .height(100.dp) // Ajusta el tamaño si es necesario
+                    .width(100.dp),
                 contentScale = ContentScale.Crop
             )
 
-            // Textos a la derecha
+            // Texto a la derecha de la imagen
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(0.8f), // Reducimos el ancho para dejar espacio a la imagen
-                horizontalAlignment = Alignment.End, // Alineamos los textos a la derecha
-                verticalArrangement = Arrangement.Center // Centrar verticalmente los textos
+                    .padding(start = 20.dp) // Espacio entre la imagen y el texto
             ) {
+                // Título
                 Text(
-                    text = "This is a title",
-                    fontSize = 24.sp,
+                    text = "Titul0",
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 5.dp)
                 )
-                Text(text = "Test")
+
 
                 Text(
-                    text = stringResource(R.string.uwu),
-                    textAlign = TextAlign.End, // Alinear texto a la derecha
-                    lineHeight = 10.sp,
-                    modifier = Modifier
-                        .padding(top = 5.dp)
+                    text = "Hola",
+                    fontSize = 18.sp,
+                    fontStyle = FontStyle.Italic
                 )
             }
         }
