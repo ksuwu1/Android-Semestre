@@ -17,10 +17,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,26 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ita.myapp.classes.ui.theme.Myapp2Theme
-
-
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavHostController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { // Lo que se imprime en pantalla
-            Column(
-                modifier = Modifier
-                    .fillMaxSize() // La columna ocupa todo el espacio
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.Center, // Alinear verticalmente
-                horizontalAlignment = Alignment.CenterHorizontally // Centrar horizontalmente
-            ) {
-                /**CustomText()
-                Picture()
-                Content1()**/
-                Content2()
-                //BoxExample1()
-            }
+        setContent {
+            ComposeMultiScreenApp()
         }
     }
 }
@@ -85,7 +72,7 @@ fun GreetingPreview() {
 @Composable
 fun ModifierExample() {
     Column(
-        modifier = Modifier.padding(24.dp) // dp es la medida en Android
+        modifier = Modifier.padding(24.dp)
     ) {
         Text(text = "Hello World")
     }
@@ -164,9 +151,10 @@ fun Content1() {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun Content2(){
+fun Content2() {
     Card(
         modifier = Modifier
             .background(Color.LightGray)
@@ -182,7 +170,7 @@ fun Content2(){
                 painter = painterResource(id = R.drawable.androidlogo),
                 contentDescription = "Android logo",
                 modifier = Modifier
-                    .height(100.dp) // Ajusta el tamaño si es necesario
+                    .height(100.dp)
                     .width(100.dp),
                 contentScale = ContentScale.Crop
             )
@@ -190,7 +178,7 @@ fun Content2(){
             // Texto a la derecha de la imagen
             Column(
                 modifier = Modifier
-                    .padding(start = 20.dp) // Espacio entre la imagen y el texto
+                    .padding(start = 20.dp)
             ) {
                 // Título
                 Text(
@@ -198,7 +186,6 @@ fun Content2(){
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
                 )
-
 
                 Text(
                     text = "Hola",
@@ -209,7 +196,6 @@ fun Content2(){
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -225,43 +211,37 @@ fun BoxExample1() {
             contentDescription = "Android Logo",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
-                .fillMaxSize() // Ajustar la imagen para que llene el contenedor
+                .fillMaxSize()
         )
 
         // Ajustamos el Row dentro del Box
         Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(0.dp,150.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp, 150.dp),
             horizontalArrangement = Arrangement.Center
-
-        )
-           {
+        ) {
             // Ícono
             Icon(
-                Icons.Filled.AccountBox,
+                painter = painterResource(R.drawable.ic_account_box),
                 contentDescription = "Icon"
             )
 
-
             // Texto
-            Text(
-                text = "Text",
-
-            )
+            Text(text = "Text")
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BoxExample2(){
+fun BoxExample2() {
     Box(
-        modifier= Modifier
+        modifier = Modifier
             .background(Color.Magenta)
             .padding(5.dp)
             .size(250.dp)
-    ){
+    ) {
         Text(text = "TopStart", Modifier.align(Alignment.TopStart))
         Text(text = "TopEnd", Modifier.align(Alignment.TopEnd))
         Text(text = "CenterStart", Modifier.align(Alignment.CenterStart))
@@ -270,6 +250,24 @@ fun BoxExample2(){
         Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
         Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
     }
+}
 
+@Composable
+fun ComposeMultiScreenApp() {
+    val navController = rememberNavController()
+    Surface(color = Color.White) {
+        SetupNavGraph(navController = navController)
+    }
+}
 
+@Composable
+fun SetupNavGraph(navController: NavHostController) {
+    NavHost(navController= navController, startDestination= "menu"){
+        composable(route:"menu"){MenuScreen(NavController)}
+        composable(route:"home"){HomeScreen(NavController)}
+
+    }
+    {
+        // Aquí se pueden agregar destinos de navegación
+    }
 }
