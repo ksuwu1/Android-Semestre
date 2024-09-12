@@ -41,6 +41,9 @@ import com.ita.myapp.classes.ui.theme.Myapp2Theme
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import com.ita.myapp.classes.ui.screens.HomeScreen
+import com.ita.myapp.classes.ui.screens.MenuScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +55,7 @@ class MainActivity : ComponentActivity() {
 }
 
 // Cada Composable es un elemento visible
-@Composable
+/**@Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
@@ -250,7 +253,7 @@ fun BoxExample2() {
         Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
         Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
     }
-}
+}**/
 
 @Composable
 fun ComposeMultiScreenApp() {
@@ -262,12 +265,9 @@ fun ComposeMultiScreenApp() {
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController= navController, startDestination= "menu"){
-        composable(route:"menu"){MenuScreen(NavController)}
-        composable(route:"home"){HomeScreen(NavController)}
-
-    }
-    {
-        // Aquí se pueden agregar destinos de navegación
+    NavHost(navController = navController, startDestination = "menu") {
+        composable(route = "menu") { MenuScreen(navController) }
+        composable(route = "home") { HomeScreen(navController) }
     }
 }
+
