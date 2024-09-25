@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            //TwitterMainScreen()
+            TwitterMainScreen()
         }
 
         // Configurar el color de la barra de estado y la barra de navegación
