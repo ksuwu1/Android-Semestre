@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TwitterMainScreen()
+            //TwitterMainScreen()
         }
 
         // Configurar el color de la barra de estado y la barra de navegación
@@ -75,6 +75,18 @@ fun TwitterMainScreen() {
             content = "El google maps se puso 'alarmante'",
             profileImageResId = R.drawable.user2,
             imageResId = R.drawable.noti2,
+            commentsCount = "5K",
+            retweetsCount = "600",
+            likesCount = "100K",
+            statisticsCount = "1M",
+        )
+        ,
+        TweetData(
+            authorName = "Xo",
+            username = "@uwu ∙ 1d",
+            content = "#YO",
+            profileImageResId = R.drawable.us1,
+            imageResId = R.drawable.t2,
             commentsCount = "5K",
             retweetsCount = "600",
             likesCount = "100K",
