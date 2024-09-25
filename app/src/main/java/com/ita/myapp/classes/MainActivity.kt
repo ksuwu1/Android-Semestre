@@ -36,6 +36,12 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.compose.material3.*
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.ita.myapp.classes.ui.screens.ComponentsScreen
 import com.ita.myapp.classes.ui.screens.HomeScreen
 import com.ita.myapp.classes.ui.screens.MenuScreen
 
@@ -667,5 +673,7 @@ fun SetupNavGraph(navController: NavHostController) {
         composable(route = "components") { ComponentsScreen(navController) }
     }
 }
+
+
 
 
