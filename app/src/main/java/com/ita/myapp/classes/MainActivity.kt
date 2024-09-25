@@ -36,24 +36,27 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import com.ita.myapp.classes.ui.screens.HomeScreen
+import com.ita.myapp.classes.ui.screens.MenuScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TwitterMainScreen()
+            ComposeMultiScreenApp()
+           // TwitterMainScreen()
         }
 
         // Configurar el color de la barra de estado y la barra de navegación
-        WindowCompat.getInsetsController(window, window.decorView).let { controller ->
-            controller.isAppearanceLightStatusBars = true
-            controller.isAppearanceLightNavigationBars = true
+        //WindowCompat.getInsetsController(window, window.decorView).let { controller ->
+            //controller.isAppearanceLightStatusBars = true
+          //  controller.isAppearanceLightNavigationBars = true
         }
 
-        window.statusBarColor = ContextCompat.getColor(this, R.color.white) // Cambia R.color.white por el color deseado
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.white) // Cambia R.color.white por el color deseado
+      //  window.statusBarColor = ContextCompat.getColor(this, R.color.white) // Cambia R.color.white por el color deseado
+        //window.navigationBarColor = ContextCompat.getColor(this, R.color.white) // Cambia R.color.white por el color deseado
     }
-}
+
 @Composable
 fun TwitterMainScreen() {
     // Lista de Tweets
@@ -646,7 +649,7 @@ fun BoxExample2() {
         Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
         Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
     }
-}
+}**/
 
 @Composable
 fun ComposeMultiScreenApp() {
@@ -661,7 +664,8 @@ fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "menu") {
         composable(route = "menu") { MenuScreen(navController) }
         composable(route = "home") { HomeScreen(navController) }
+        composable(route = "components") { ComponentsScreen(navController) }
     }
 }
-**/
+
 
