@@ -1,226 +1,388 @@
 package com.ita.myapp.classes.ui.screens
 
+
+import android.R.attr.contentDescription
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem // Asegúrate de que este import está presente
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Slider
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import java.nio.file.WatchEvent
 
 @Composable
 fun ComponentsScreen(navController: NavController) {
-    var component by remember { mutableStateOf("") }
+    var component by remember { mutableStateOf("") } // actualizar variable interfaz
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
-        ModalDrawerSheet {
-            Text("Menu", modifier = Modifier.padding(16.dp))
-            HorizontalDivider()
-            //Content 1
-            NavigationDrawerItem(
-                label = { Text(text = "Content 1")},
-                selected = false,
-                onClick = {
-                    component = "Content1"
-                    scope.launch {
-                        drawerState.apply {
-                            close()
-                        }
-                    }
-                }
-            )
-            //Content 2
-            HorizontalDivider()
-            NavigationDrawerItem(
-                label = { Text(text = "Content 2")},
-                selected = false,
-                onClick = {
-                    component = "Content2"
-                    scope.launch {
-                        drawerState.apply {
-                            close()
-                        }
-                    }
-                }
-            )
-            //Content 3
-            HorizontalDivider()
-            NavigationDrawerItem(
-                label = { Text(text = "Content 3")},
-                selected = false,
-                onClick = {
-                    component = "Button"
-                    scope.launch {
-                        drawerState.apply {
-                            close()
-                        }
-                    }
-                }
-            )
-            //Content 4
-            HorizontalDivider()
-            NavigationDrawerItem(
-                label = { Text(text = "Content 4")},
-                selected = false,
-                onClick = {
-                    component = "FloatingButtons"
-                    scope.launch {
-                        drawerState.apply {
-                            close()
-                        }
-                    }
-                }
-            )
-            //Content 5
-            HorizontalDivider()
-            NavigationDrawerItem(
-                label = { Text(text = "Content 5")},
-                selected = false,
-                onClick = {
-                    component = "Chips"
-                    scope.launch {
-                        drawerState.apply {
-                            close()
-                        }
-                    }
-                }
-            )
 
-        }
-    }) {
+    ModalNavigationDrawer(
+
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Text("Menu", modifier = Modifier.padding(16.dp))
+                HorizontalDivider()
+
+                //Content1
+                NavigationDrawerItem(
+                    label = {
+                        Text(text = "Contenido1")
+                    },
+                    selected = false,
+                    onClick = {
+                        component = "Content1"
+                        scope.launch {
+                            drawerState.close() // Uso correcto para cerrar el Drawer
+                        }
+                    }
+                )//end NavigationDrawerItem
+
+                //Content2
+                NavigationDrawerItem(
+                    label = {
+                        Text(text = "Contenido2")
+                    },
+                    selected = false,
+                    onClick = {
+                        component = "Content2"
+                        scope.launch {
+                            drawerState.close() // Uso correcto para cerrar el Drawer
+                        }
+                    }
+                )//end NavigationDrawerItem
+
+                //FloatingAction
+                NavigationDrawerItem(
+                    label = {
+                        Text(text = "Floating Buttons")
+                    },
+                    selected = false,
+                    onClick = {
+                        component = "floating-buttons"
+                        scope.launch {
+                            drawerState.close() // Uso correcto para cerrar el Drawer
+                        }
+                    }
+                )//end NavigationDrawerItem
+
+                //Chips
+                NavigationDrawerItem(
+                    label = {
+                        Text(text = "Chips")
+                    },
+                    selected = false,
+                    onClick = {
+                        component = "chips"
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                )//end NavigationDrawerItem
+
+            }//end ModelDrawerSheet
+        }//drawerContent
+    ) {
+
         Column {
-            when(component){
-                "Content1" ->
-                    Conent1()
-                "Content2" ->
+            when(component){//switchcasse
+                "Content1"->{
+                    Content1()
+                }
+                "Content2"->{
                     Content2()
-                "Button" ->
-                    Button()
-                "FloatingButtons" ->
+                }
+                "floating-buttons"->{
                     FloatingButtons()
-                "Chips" ->
-                    Chips()
+                }
+                "chips"->{
+                    FloatingButtons()
+                }
             }
-        }
+        }//end Column
+
     }
-
 }
 
 @Composable
-fun Conent1(){
-    Text(text = "Content 1")
+fun Content1() {
+    Text(text = "Content1")
 }
 
 @Composable
-fun Content2(){
-    Text(text = "Content 2")
+fun Content2() {
+    Text(text = "Content2")
 }
-
 @Composable
-fun Button() {
+fun Buttons(){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxSize()
     ){
-        androidx.compose.material3.Button(onClick = { /*TODO*/ }) {
+        Button(
+            onClick = {}
+        ){
             Text(text = "Filled")
         }
-        FilledTonalButton(onClick = { /*TODO*/ }) {
+
+        FilledTonalButton(
+            onClick = {}
+        ){
             Text(text = "Tonal")
         }
-        OutlinedButton(onClick = { /*TODO*/ }) {
-            Text(text = "OutLine")
+
+        OutlinedButton(
+            onClick = {}
+        ){
+            Text(text = "Outlined")
         }
-        ElevatedButton(onClick = { /*TODO*/ }) {
+
+        ElevatedButton(
+            onClick = {}
+        ){
             Text(text = "Elevated")
         }
-        TextButton(onClick = { /*TODO*/ }) {
+
+        TextButton(
+            onClick = {}
+        ){
             Text(text = "Text")
         }
 
     }
 }
-
+//@Preview(showBackground = true)
 @Composable
-fun FloatingButtons() {
+fun FloatingButtons( ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxSize()
     ) {
-        FloatingActionButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.Search, "")
+        FloatingActionButton(onClick = {}) {
+            Icon(Icons.Filled.Add, "")
         }
-        SmallFloatingActionButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.Search, "")
+
+        SmallFloatingActionButton(onClick = {}) {
+            Icon(Icons.Filled.Add, "")
         }
-        LargeFloatingActionButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Filled.Search, "")
+
+        LargeFloatingActionButton(onClick = {}) {
+            Icon(Icons.Filled.Add, "")
         }
-        ExtendedFloatingActionButton(onClick = { /*TODO*/ },
-            icon = { Icon(Icons.Filled.Search, "") },
-            text = { Text(text = "Extended FAB") })
+        ExtendedFloatingActionButton(
+            onClick = {},
+            icon =  {Icon(Icons.Filled.Add, "")},
+            text = {Text(text = "Extended FAB")}
+        )
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun Chips() {
+fun Chips( ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxSize()
-    ) {
-        AssistChip(onClick = { /*TODO*/ }, label = {Text(text = "Assist Chip")},
+    ){
+        AssistChip(
+            onClick = {},
+            label = { Text(text = "Assist Chip")},
             leadingIcon = {
-                Icon(Icons.Filled.AccountBox, "", Modifier.size(AssistChipDefaults.IconSize))
-            })
+                Icon(Icons.Filled.AccountBox, "",
+                    Modifier.size(AssistChipDefaults.IconSize))
+            }
+        )//end AssistChip
 
         var selected by remember { mutableStateOf(false)}
+
         FilterChip(
+
             selected = selected,
-            onClick = {selected = !selected},
-            label = {Text(text = "Filter Chip")},
-            leadingIcon = if(selected) {
+            onClick = {},
+            label = { Text(text = "Filter Chip")},
+            leadingIcon = if(selected){
                 {
-                    Icon(Icons.Filled.AccountBox, "", Modifier.size(AssistChipDefaults.IconSize))
+                    Icon(
+                        Icons.Filled.AccountBox, "",
+                        Modifier.size(AssistChipDefaults.IconSize)
+                    )//end Icon
                 }
-            }else{null}
+            }else{
+                null
+            }
+
         )
+        InputChipExample(text = "Dismiss",{})
+
+    }
+}//end Chips
+
+@Composable
+fun InputChipExample(
+    text: String,
+    onDismiss: () -> Unit
+) {
+    var enabled by remember { mutableStateOf(true) }
+    if (!enabled) return
+
+    InputChip(
+        label = { Text(text) },
+        selected = enabled, // Cambié 'select' a 'selected'
+        onClick = {
+            onDismiss()
+            enabled = !enabled
+        },
+        avatar = {
+            Icon(
+                imageVector = Icons.Filled.Person, // Envolví el ícono en `Icon`
+                contentDescription = null,
+                modifier = Modifier.size(InputChipDefaults.AvatarSize)
+            )
+        },
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Filled.Person, // Envolví el ícono en `Icon`
+                contentDescription = null,
+                modifier = Modifier.size(InputChipDefaults.AvatarSize)
+            )
+        }
+    )
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun Progress() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxSize()
+    )
+    {
+        LinearProgressIndicator(
+            modifier = Modifier.fillMaxWidth()
+        )
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp)
+
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Sliders() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        var sliderPosition by remember {mutableStateOf(value = 50f)}
+       Column {
+           Slider(
+               value = sliderPosition,
+               onValueChange = { sliderPosition = it},
+               steps = 10,
+               valueRange = 0f..100f
+
+           )
+           Text(
+               textAlign = TextAlign.Center,
+               modifier = Modifier.fillMaxWidth(),
+               text = sliderPosition.toString()
+           )
+
+       }
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Switches() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        var checked by remember {mutableStateOf(true)}
+        Switch(
+            checked = checked,
+            onCheckedChange={
+                checked = it
+            }
+
+        )
+
+        var checked2 by remember { mutableStateOf(true) }
+        Switch(
+            checked = checked2,
+            onCheckedChange = { checked2 = it }, // Cambié `checked` por `checked2`
+            // Removido `thumbContent` porque no es soportado en Switch
+        )
+
+        var checked3 by remember { mutableStateOf(true) }
+        Checkbox(
+            checked = checked3,
+            onCheckedChange = { checked3 = it }
+        )
+
     }
 }
