@@ -45,6 +45,7 @@ import com.ita.myapp.classes.ui.screens.ComponentsScreen
 import com.ita.myapp.classes.ui.screens.HomeScreen
 import com.ita.myapp.classes.ui.screens.MenuScreen
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

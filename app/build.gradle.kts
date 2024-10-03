@@ -66,11 +66,11 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
-    //*implementation("androidx.compose.ui:ui:1.5.3")
+    implementation("androidx.compose.ui:ui:1.5.3")
     //implementation("androidx.navigation:navigation-compose:2.6.0")
-    //implementation("androidx.compose.material3:material3:1.1.1")
-    //implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
-    //implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.compose.material3:material3:1.1.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
+
     implementation("androidx.compose.material:material:1.4.0") // Reemplaza con la versión correspondiente
     implementation("androidx.compose.material:material-icons-core:1.4.0") // Reemplaza con la versión correspondiente
     implementation ("androidx.navigation:navigation-compose:2.6.0")
