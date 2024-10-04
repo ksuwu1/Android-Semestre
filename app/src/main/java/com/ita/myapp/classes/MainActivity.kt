@@ -4,6 +4,7 @@ package com.ita.myapp.classes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,6 +50,7 @@ import com.ita.myapp.classes.ui.screens.ComponentsScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge() // Colors also baterry and stuff bar
         setContent {
             ComposeMultiScreenApp()
            // TwitterMainScreen()

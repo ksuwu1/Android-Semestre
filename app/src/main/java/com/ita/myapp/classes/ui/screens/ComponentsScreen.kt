@@ -92,7 +92,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Components(navController: NavController) {
+fun ComponentsScreen(navController: NavController) {
     var component by remember{ mutableStateOf("") } //Can assign a value
     // A reactive component to UI COMPONENTS
     // A global variable that its state can by updated using buttons
