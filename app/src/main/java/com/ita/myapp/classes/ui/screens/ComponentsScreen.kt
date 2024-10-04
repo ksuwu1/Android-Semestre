@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,8 +17,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Badge
@@ -49,6 +54,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -68,9 +75,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role.Companion.Switch
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
@@ -83,7 +92,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ComponentsScreen(navController: NavController) {
+fun Components(navController: NavController) {
     var component by remember{ mutableStateOf("") } //Can assign a value
     // A reactive component to UI COMPONENTS
     // A global variable that its state can by updated using buttons
@@ -241,6 +250,45 @@ fun ComponentsScreen(navController: NavController) {
                         }
                     }
                 )
+
+                //AlertDialogs
+                NavigationDrawerItem(label = { Text("AlertDialogs") }, //TITLE OF BUTTON //fist item
+                    selected = false //is selected?
+                    , onClick = {
+                        component="AlertDialogs"
+                        scope.launch {
+                            drawerState.apply {
+                                close() // Close drawer or side menu
+                            }
+                        }
+                    }
+                )
+
+                //SnackBars
+                NavigationDrawerItem(label = { Text("SnackBars") }, //TITLE OF BUTTON //fist item
+                    selected = false //is selected?
+                    , onClick = {
+                        component="SnackBars"
+                        scope.launch {
+                            drawerState.apply {
+                                close() // Close drawer or side menu
+                            }
+                        }
+                    }
+                )
+
+                //Bars
+                NavigationDrawerItem(label = { Text("Bars") }, //TITLE OF BUTTON //fist item
+                    selected = false //is selected?
+                    , onClick = {
+                        component="Bars"
+                        scope.launch {
+                            drawerState.apply {
+                                close() // Close drawer or side menu
+                            }
+                        }
+                    }
+                )
             }
 
         }) {
@@ -279,6 +327,16 @@ fun ComponentsScreen(navController: NavController) {
                 "DatePickers"->{
                     DatePickerDocked()
                 }
+                "AlertDialogs"->{ //Notify the user a task done
+                    AlertDialogs()
+                }
+                "SnackBars"->{ //A dialog prompt to confirm
+                    SnackBars()
+                }
+                "Bars"->{
+                    Bars()
+                }
+
 
             }
             /*Text(text = component)
@@ -693,4 +751,106 @@ fun TimePickers1(
             }
         }
     }
+}
+
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun SnackBars() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        val snackState = remember { SnackbarHostState() }
+        val snackScope = rememberCoroutineScope()
+
+        SnackbarHost(hostState= snackState,Modifier)
+
+        fun launchSnackBar(){
+            snackScope.launch { snackState.showSnackbar("The message was sent") }
+        }
+        Button(::launchSnackBar){
+            Text(text = "Show Snackbar")
+        }
+    }
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun AlertDialogs() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        var showAlertDialog by remember { mutableStateOf(false) }
+        var selectedOption by remember { mutableStateOf("") }
+
+        if(showAlertDialog){
+            AlertDialog(
+                icon = { Icon(Icons.Filled.Warning, contentDescription = "")},
+                title = {Text("Confirm deletion")},
+                text = {Text("Are you sure you want to delete the file?")},
+                onDismissRequest = {},
+                confirmButton = {
+                    TextButton(onClick = {
+                        selectedOption = "Confirm"
+                        showAlertDialog=false
+                    }) {
+                        Text(text = "Confirm")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        selectedOption = "Dismiss"
+                        showAlertDialog=false
+                    }) {
+                        Text(text = "Dismiss")
+                    }
+                }
+            )
+        }
+        Text(text=selectedOption) //First is empty
+        Button(onClick = {showAlertDialog=true}) {
+            Text("Show alert dialog")
+        }
+    }
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun Bars() {
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.DarkGray)
+    ){
+        Row( //Custom Header
+            modifier= Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .background(Color.Black)
+                .padding(10.dp, 50.dp, 10.dp, 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Icon(Icons.Filled.Menu, "", tint = Color.White)
+            Text(
+                "App Title",
+                color=Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize=20.sp
+            )
+            Icon(Icons.Filled.Settings, "", tint = Color.White)
+        }
+    }
+
 }
