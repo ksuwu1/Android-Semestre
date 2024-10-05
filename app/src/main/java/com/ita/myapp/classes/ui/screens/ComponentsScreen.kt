@@ -3,8 +3,12 @@ package com.ita.myapp.classes.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+//import androidx.compose.foundation.layout.BoxScopeInstance.align
 import androidx.compose.foundation.layout.Column
+//import androidx.compose.foundation.layout.FlowColumnScopeInstance.align
+//import androidx.compose.foundation.layout.FlowRowScopeInstance.align
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +16,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
@@ -22,6 +30,10 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -74,6 +86,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Switch
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -82,6 +95,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
+import com.ita.myapp.classes.R
+import com.ita.myapp.classes.data.model.PostModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -851,6 +866,122 @@ fun Bars() {
             )
             Icon(Icons.Filled.Settings, "", tint = Color.White)
         }
-    }
 
+        var post = arrayOf(
+            PostModel(1,"Title1","Text1"),
+            PostModel(2,"Title2","Text2"),
+            PostModel(3,"Title3","Text3"),
+            PostModel(4,"Title4","Text4"),
+            PostModel(5,"Title5","Text5")
+        )
+        Posts(arrayPosts = post)
+        /*Column( // Inside Content
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(10.dp, 90.dp, 10.dp, 50.dp) // Considering space of bars
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()) // To scroll only the content
+        ){ //Entire content
+
+            Text(
+                text = stringResource(id = R.string.text_card),
+                color = Color.White,
+                fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider(thickness = 2.dp)
+
+            //OTHER ELEMENTS
+            Posts(post)
+
+        }*/
+        Row( //Bottom Nav Bar
+            modifier= Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .background(Color.Black)
+                .height(60.dp)
+                .padding(2.dp, 5.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ){ //Bottom Bar
+            /**
+             * Icons on the bottom nav bar
+             */
+            Column{
+                IconButton(onClick={}, modifier = Modifier.size(30.dp)){
+                    Icon(Icons.Outlined.Search,
+                        contentDescription="",
+                        tint=Color.White,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Text("Search", color=Color.White)
+            }
+            Column{
+                IconButton(onClick={}, modifier = Modifier.size(30.dp)){
+                    Icon(Icons.Outlined.Menu,
+                        contentDescription="",
+                        tint=Color.White,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Text("Men", color=Color.White)
+            }
+            Column{
+                IconButton(onClick={}, modifier = Modifier.size(30.dp)){
+                    Icon(Icons.Outlined.Home,
+                        contentDescription="",
+                        tint=Color.White,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Text("Home", color=Color.White)
+            }
+            Column{
+                IconButton(onClick={}, modifier = Modifier.size(30.dp)){
+                    Icon(Icons.Outlined.Settings,
+                        contentDescription="",
+                        tint=Color.White,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Text("Settings", color=Color.White)
+            }
+        }
+    }
+}
+
+@Composable
+fun Posts(arrayPosts : Array<PostModel>){
+    LazyColumn(
+        /*modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)*/
+        modifier = Modifier
+            //.align(Alignment.TopCenter)
+            .padding(10.dp, 90.dp, 10.dp, 50.dp) // Considering space of bars
+            .fillMaxSize()
+        //.verticalScroll(rememberScrollState()) // To scroll only the content
+    ){
+        items(arrayPosts){ // For each
+                post ->
+
+            Text(
+                text = post.title,
+                color = Color.White,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = post.text,
+                color = Color.White,
+                fontSize = 16.sp,
+                //fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider(thickness = 2.dp)
+
+        }
+    }
 }
