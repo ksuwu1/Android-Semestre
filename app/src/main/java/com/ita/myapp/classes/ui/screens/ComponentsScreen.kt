@@ -82,10 +82,13 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -111,11 +114,13 @@ import com.ita.myapp.classes.R
 import com.ita.myapp.classes.data.model.MenuModel
 import com.ita.myapp.classes.data.model.PostModel
 import com.ita.myapp.classes.ui.components.PostCard
+import com.ita.myapp.classes.ui.components.PostCardCompact
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+
 
 //import java.lang.reflect.Modifier
 
@@ -137,6 +142,7 @@ fun ComponentsScreen(navController: NavController) {
         MenuModel(12,"AlertDialogs","AlertDialogs",Icons.Filled.Warning),
         MenuModel(13,"SnackBars","SnackBars",Icons.Filled.Settings),
         MenuModel(14,"Bars","Bars",Icons.Filled.Person),
+        MenuModel(14,"Adaptive","Adaptive",Icons.Filled.Check),
     )
     // In order to support horizontal page view change, remember Saveable
     var component by rememberSaveable{ mutableStateOf("") } //Can assign a value
@@ -879,7 +885,7 @@ fun AlertDialogs() {
                 }
             )
         }
-        Text(text=selectedOption) //First is empty
+        Text(text=selectedOption)
         Button(onClick = {showAlertDialog=true}) {
             Text("Show alert dialog")
         }
@@ -930,7 +936,7 @@ private fun Bars() {
         PostGrid(arrayPosts = post)
 
 
-        //PostCard(1,"This is the card Title","This is the card Text",painterResource(R.drawable.sushi))
+
         /*Column( // Inside Content
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -1008,43 +1014,69 @@ private fun Bars() {
 }
 
 @Composable
-fun Posts(arrayPosts : Array<PostModel>){
-    //LazyColumn(
-    LazyRow(
-        /*modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)*/
+fun Posts(arrayPosts : Array<PostModel>, adaptive:String) {
+    LazyColumn(
         modifier = Modifier
-            //.align(Alignment.TopCenter)
-            .padding(10.dp, 90.dp, 10.dp, 50.dp) // Considering space of bars
             .fillMaxSize()
-        //.verticalScroll(rememberScrollState()) // To scroll only the content
-    ){
-        items(arrayPosts){ // For each
-                post ->
+    ) {
+        items(arrayPosts) { post ->
+            when(adaptive){
+                "PhonePortrait" ->{
+                    PostCardCompact(post.id, post.title, post.text, post.image)
+                }
+                "PhoneLandscape" ->{
+                    PostCard(post.id, post.title, post.text, post.image)
+                }
 
-            PostCard(id = post.id, title = post.title, text = post.text, image = post.image)
+            }
+
         }
     }
 }
 
 @Composable
-fun PostGrid(arrayPosts : Array<PostModel>){
+fun PostGrid(arrayPosts: Array<PostModel>){
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
-        /*modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)*/
+        columns = GridCells.Adaptive(minSize = 120.dp),
         modifier = Modifier
-            //.align(Alignment.TopCenter)
-            .padding(10.dp, 90.dp, 10.dp, 50.dp) // Considering space of bars
             .fillMaxSize()
-        //.verticalScroll(rememberScrollState()) // To scroll only the content
-    ){
-        items(arrayPosts){ // For each
-                post ->
-
-            PostCard(id = post.id, title = post.title, text = post.text, image = post.image)
+    ) {
+        items(arrayPosts) { post ->
+            PostCard(post.id, post.title, post.text, post.image)
         }
     }
+}
+
+@Preview(showBackground = true, device = "spec:id=reference_tablet,shape=Normal,width=1280,height=800,unit=dp,dpi=240")
+@Composable
+fun Adaptative(){
+    var WindowSize = currentWindowAdaptiveInfo()
+    var height = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+    var width = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
+
+    // Compact height < 600dp phones in portrait mode
+    // Medium width >= 600dp < 840dp Tablets in portrait mode
+    // Expanded width > 840dp Tblet in landscape mode
+
+    //Compact height < 480dp Phone in landscape mode
+    //Medium height >= 480dp < 900dp Tablet landscape or Phone in portrait
+    //Expanded > 900dp Tablet in portrait
+
+    var post = arrayOf(
+        PostModel(1, "Title 1", "Text1", painterResource(R.drawable.t2)),
+        PostModel(2, "Title 2", "Text2", painterResource(R.drawable.t2)),
+        PostModel(3, "Title 3", "Text3", painterResource(R.drawable.t2)),
+        PostModel(4, "Title 4", "Text4", painterResource(R.drawable.t2))
+    )
+
+    if (width == WindowWidthSizeClass.COMPACT){
+        Posts(post,"PhonePortrait")
+    }else if (height == WindowHeightSizeClass.COMPACT){
+        Posts(post,"PhoneLandscape")
+
+    }else{
+        Posts(post, "Otros dispositivos")
+    }
+
+    //Text(text = WindowSize.toString())
 }
