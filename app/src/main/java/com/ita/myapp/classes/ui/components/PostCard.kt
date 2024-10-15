@@ -1,7 +1,8 @@
 package com.ita.myapp.classes.ui.components
 
-
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.content.MediaType.Companion.Image
+import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,13 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ita.myapp.classes.R
 
+
+//@Preview(showBackground = true)
 @Composable
-fun PostCard(id: Int, title: String, text: String, image: Painter) {
+fun PostCard(id: Int, title : String, text:String, image: Painter){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,36 +37,35 @@ fun PostCard(id: Int, title: String, text: String, image: Painter) {
             containerColor = Color.Black,
             contentColor = Color.White
         )
-    ) {
-        Column {
-            Text(
-                text = title,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(10.dp)
-            )
+    ){
+        Text(
+            text = title,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(10.dp)
+        )
 
-            Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                painter = image,
-                contentDescription = "Image description",
-                contentScale = ContentScale.Crop
-            )
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            painter = image,
+            contentDescription = "Android logo",
+            contentScale = ContentScale.Crop
+        )
 
-            Text(
-                text = text,
-                fontSize = 18.sp,
-                textAlign = TextAlign.Justify,
-                modifier = Modifier.padding(10.dp)
-            )
-        }
+        Text(
+            text = text,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.padding(10.dp)
+        )
+
     }
 }
 
 @Composable
-fun PostCardCompact(title: String, image: Painter) {
+fun PostCardCompact(id: Int, title : String, text:String, image: Painter){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,26 +74,31 @@ fun PostCardCompact(title: String, image: Painter) {
             containerColor = Color.Black,
             contentColor = Color.White
         )
-    ) {
-        Row {
+    ){
+        Row(){
             Image(
                 modifier = Modifier
                     .width(80.dp)
                     .height(100.dp)
-                    .padding(10.dp),
+                    .padding(5.dp),
                 painter = image,
-                contentDescription = "Image description",
+                contentDescription = "Android Logo",
                 contentScale = ContentScale.FillBounds
             )
-
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column{
                 Text(
                     text = title,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize =  14.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(10.dp)
                 )
-
-                // Puedes agregar más textos u otros elementos aquí si es necesario
+                Text(
+                    text = text,
+                    fontSize = 13.sp,
+                    textAlign = TextAlign.Justify,
+                    maxLines = 3,
+                    modifier = Modifier.padding(10.dp)
+                )
             }
         }
     }

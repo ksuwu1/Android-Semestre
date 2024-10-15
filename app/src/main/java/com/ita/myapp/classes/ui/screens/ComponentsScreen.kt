@@ -87,8 +87,6 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -110,6 +108,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
+import androidx.window.core.layout.WindowHeightSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.ita.myapp.classes.R
 import com.ita.myapp.classes.data.model.MenuModel
 import com.ita.myapp.classes.data.model.PostModel
@@ -120,7 +120,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-
 
 //import java.lang.reflect.Modifier
 
@@ -142,7 +141,7 @@ fun ComponentsScreen(navController: NavController) {
         MenuModel(12,"AlertDialogs","AlertDialogs",Icons.Filled.Warning),
         MenuModel(13,"SnackBars","SnackBars",Icons.Filled.Settings),
         MenuModel(14,"Bars","Bars",Icons.Filled.Person),
-        MenuModel(14,"Adaptive","Adaptive",Icons.Filled.Check),
+        MenuModel(15,"Adaptive","Adaptive",Icons.Filled.Warning)
     )
     // In order to support horizontal page view change, remember Saveable
     var component by rememberSaveable{ mutableStateOf("") } //Can assign a value
@@ -403,6 +402,9 @@ fun ComponentsScreen(navController: NavController) {
                 }
                 "Bars"->{
                     Bars()
+                }
+                "Adaptive"->{
+                    Adaptive()
                 }
 
 
@@ -885,7 +887,7 @@ fun AlertDialogs() {
                 }
             )
         }
-        Text(text=selectedOption)
+        Text(text=selectedOption) //First is empty
         Button(onClick = {showAlertDialog=true}) {
             Text("Show alert dialog")
         }
@@ -921,22 +923,22 @@ private fun Bars() {
         }
 
         var post = arrayOf(
-            PostModel(1,"Title1","Text1",painterResource(R.drawable.home)),
-            PostModel(2,"Title2","Text2",painterResource(R.drawable.home)),
-            PostModel(3,"Title3","Text3",painterResource(R.drawable.home)),
-            PostModel(4,"Title4","Text4",painterResource(R.drawable.home)),
-            PostModel(5,"Title5","Text5",painterResource(R.drawable.home)),
-            PostModel(6,"Title6","Text6",painterResource(R.drawable.home)),
-            PostModel(7,"Title7","Text7",painterResource(R.drawable.home)),
-            PostModel(8,"Title8","Text8",painterResource(R.drawable.home)),
-            PostModel(9,"Title9","Text9",painterResource(R.drawable.home)),
-            PostModel(10,"Title10","Text10",painterResource(R.drawable.home)),
+            PostModel(1,"Title1","Text1",painterResource(R.drawable.zi)),
+            PostModel(2,"Title2","Text2",painterResource(R.drawable.zi)),
+            PostModel(3,"Title3","Text3",painterResource(R.drawable.zi)),
+            PostModel(4,"Title4","Text4",painterResource(R.drawable.zi)),
+            PostModel(5,"Title5","Text5",painterResource(R.drawable.zi)),
+            PostModel(6,"Title6","Text6",painterResource(R.drawable.zi)),
+            PostModel(7,"Title7","Text7",painterResource(R.drawable.zi)),
+            PostModel(8,"Title8","Text8",painterResource(R.drawable.zi)),
+            PostModel(9,"Title9","Text9",painterResource(R.drawable.zi)),
+            PostModel(10,"Title10","Text10",painterResource(R.drawable.zi)),
         )
         //Posts(arrayPosts = post)
         PostGrid(arrayPosts = post)
 
 
-
+        //PostCard(1,"This is the card Title","This is the card Text",painterResource(R.drawable.sushi))
         /*Column( // Inside Content
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -1014,20 +1016,27 @@ private fun Bars() {
 }
 
 @Composable
-fun Posts(arrayPosts : Array<PostModel>, adaptive:String) {
+fun Posts(arrayPosts : Array<PostModel>,adaptive:String){
     LazyColumn(
+        //LazyRow(
+        /*modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)*/
         modifier = Modifier
+            //.align(Alignment.TopCenter)
+            .padding(10.dp, 90.dp, 10.dp, 50.dp) // Considering space of bars
             .fillMaxSize()
-    ) {
-        items(arrayPosts) { post ->
+        //.verticalScroll(rememberScrollState()) // To scroll only the content
+    ){
+        items(arrayPosts){ // For each
+                post ->
             when(adaptive){
-                "PhonePortrait" ->{
-                    PostCardCompact(post.id, post.title, post.text, post.image)
+                "PhoneP"->{
+                    PostCardCompact(id = post.id, title = post.title, text = post.text, image = post.image)
                 }
-                "PhoneLandscape" ->{
-                    PostCard(post.id, post.title, post.text, post.image)
+                "PhoneL"->{
+                    PostCard(id = post.id, title = post.title, text = post.text, image = post.image)
                 }
-
             }
 
         }
@@ -1035,48 +1044,69 @@ fun Posts(arrayPosts : Array<PostModel>, adaptive:String) {
 }
 
 @Composable
-fun PostGrid(arrayPosts: Array<PostModel>){
+fun PostGrid(arrayPosts : Array<PostModel>){
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp),
+        columns = GridCells.Adaptive(minSize = 128.dp),
+        /*modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)*/
         modifier = Modifier
+            //.align(Alignment.TopCenter)
+            .padding(10.dp, 90.dp, 10.dp, 50.dp) // Considering space of bars
             .fillMaxSize()
-    ) {
-        items(arrayPosts) { post ->
-            PostCard(post.id, post.title, post.text, post.image)
+        //.verticalScroll(rememberScrollState()) // To scroll only the content
+    ){
+        items(arrayPosts){ // For each
+                post ->
+
+            PostCard(id = post.id, title = post.title, text = post.text, image = post.image)
         }
     }
 }
 
-@Preview(showBackground = true, device = "spec:id=reference_tablet,shape=Normal,width=1280,height=800,unit=dp,dpi=240")
+@Preview(showBackground = true,device ="spec:id=reference_tablet,shape=Normal,width=1280,height=800,unit=dp,dpi=240")
 @Composable
-fun Adaptative(){
-    var WindowSize = currentWindowAdaptiveInfo()
+fun Adaptive(){
+    // Stores the dimensions of the actual screen
+    var WindowsSize = currentWindowAdaptiveInfo().windowSizeClass
+
+    //Sets variables with the height and width of the screen
     var height = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
     var width = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
 
-    // Compact height < 600dp phones in portrait mode
-    // Medium width >= 600dp < 840dp Tablets in portrait mode
-    // Expanded width > 840dp Tblet in landscape mode
-
-    //Compact height < 480dp Phone in landscape mode
-    //Medium height >= 480dp < 900dp Tablet landscape or Phone in portrait
-    //Expanded > 900dp Tablet in portrait
-
+    /**
+     * Android handles 3 predifined dimensions
+     *
+     * COMPACT
+     * Compact width < 600dp Phone portrait
+     * Compact height < 480dp Phone landscape
+     *
+     * MEDIUM
+     * Medium width >= 600dp and width <840dp Tablets  portrait
+     * Medium height >=480dp and height < 900dp Tablets landscape or phone portrait
+     *
+     * EXPANDED
+     * Expanded width > 840dp Tablet landscape
+     * Expanded height > 900.dp Tablet in portrait
+     */
     var post = arrayOf(
-        PostModel(1, "Title 1", "Text1", painterResource(R.drawable.t2)),
-        PostModel(2, "Title 2", "Text2", painterResource(R.drawable.t2)),
-        PostModel(3, "Title 3", "Text3", painterResource(R.drawable.t2)),
-        PostModel(4, "Title 4", "Text4", painterResource(R.drawable.t2))
+        PostModel(1,"Title1","Text1",painterResource(R.drawable.zi)),
+        PostModel(2,"Title2","Text2",painterResource(R.drawable.zi)),
+        PostModel(3,"Title3","Text3",painterResource(R.drawable.zi)),
+        PostModel(4,"Title4","Text4",painterResource(R.drawable.zi)),
+        PostModel(5,"Title5","Text5",painterResource(R.drawable.zi)),
+        PostModel(6,"Title6","Text6",painterResource(R.drawable.zi)),
+        PostModel(7,"Title7","Text7",painterResource(R.drawable.zi)),
+        PostModel(8,"Title8","Text8",painterResource(R.drawable.zi)),
+        PostModel(9,"Title9","Text9",painterResource(R.drawable.zi)),
+        PostModel(10,"Title10","Text10",painterResource(R.drawable.zi)),
     )
-
-    if (width == WindowWidthSizeClass.COMPACT){
-        Posts(post,"PhonePortrait")
-    }else if (height == WindowHeightSizeClass.COMPACT){
-        Posts(post,"PhoneLandscape")
-
+    if(width == WindowWidthSizeClass.COMPACT){
+        Posts(post, "PhoneP") //PhoneP = Phone PORTRAIT
+    }else if(height == WindowHeightSizeClass.COMPACT){
+        Posts(post, "PhoneL") //PhoneP = Phone LANDSCAPE
     }else{
-        Posts(post, "Otros dispositivos")
+        Posts(post, "PhoneL")
     }
-
-    //Text(text = WindowSize.toString())
+    //Text(text=WindowsSize.toString())
 }

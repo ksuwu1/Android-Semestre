@@ -1,682 +1,382 @@
 package com.ita.myapp.classes
 
-
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
+import android.view.Menu
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Cyan
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.draw.clip
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.compose.material3.*
 import androidx.navigation.NavHostController
+import com.ita.myapp.classes.ui.theme.Myapp2Theme
+import kotlin.math.max
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ita.myapp.classes.ui.screens.HomeScreen
-import com.ita.myapp.classes.ui.screens.MenuScreen
 import com.ita.myapp.classes.ui.screens.ComponentsScreen
+import com.ita.myapp.classes.ui.screens.MenuScreen
 
+//import androidx.navigation.compose.NavHostController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge() // Colors also baterry and stuff bar
-        setContent {
+        setContent { //Lo que se imprime en pantalla
             ComposeMultiScreenApp()
-           // TwitterMainScreen()
-        }
-
-        // Configurar el color de la barra de estado y la barra de navegación
-        //WindowCompat.getInsetsController(window, window.decorView).let { controller ->
-            //controller.isAppearanceLightStatusBars = true
-          //  controller.isAppearanceLightNavigationBars = true
-        }
-
-      //  window.statusBarColor = ContextCompat.getColor(this, R.color.white) // Cambia R.color.white por el color deseado
-        //window.navigationBarColor = ContextCompat.getColor(this, R.color.white) // Cambia R.color.white por el color deseado
-    }
-
-@Composable
-fun TwitterMainScreen() {
-    // Lista de Tweets
-    val tweets = listOf(
-        TweetData(
-            authorName = "Cerebros",
-            username = "@Cerebros ∙ 6h",
-            content = "De último momento: Senado aprueba que el 1 de octubre, cada seis años, sea día de descanso obligatorio por el cambio de Gobierno Federal.",
-            profileImageResId = R.drawable.user1,
-            imageResId = R.drawable.tw1,
-            commentsCount = "59",
-            retweetsCount = "414",
-            likesCount = "7.9K",
-            statisticsCount = "215K",
-        ),
-        TweetData(
-            authorName = "Xo",
-            username = "@xoytoxica ∙ 1d",
-            content = "El google maps se puso 'alarmante'",
-            profileImageResId = R.drawable.user2,
-            imageResId = R.drawable.noti2,
-            commentsCount = "5K",
-            retweetsCount = "600",
-            likesCount = "100K",
-            statisticsCount = "1M",
-        )
-        ,
-        TweetData(
-            authorName = "Xo",
-            username = "@uwu ∙ 1d",
-            content = "#YO",
-            profileImageResId = R.drawable.us1,
-            imageResId = R.drawable.t2,
-            commentsCount = "5K",
-            retweetsCount = "600",
-            likesCount = "100K",
-            statisticsCount = "1M",
-        )
-    )
-
-    var selectedItem by remember { mutableStateOf(0) }
-    var selectedTab by remember { mutableStateOf(0) }
-
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(selectedItem = selectedItem, onItemSelected = { selectedItem = it })
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { /* Manejar redacción de nuevo tweet */ },
-                backgroundColor = Color(0xFF1DA1F2)
-            ) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "New Tweet")
+            /*Column(
+                modifier= Modifier
+                    .fillMaxSize() //De esa columna ocupa todo el espacio
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Center, //Donde lo quieres alinear de forma vertical
+                horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally //Centrarlo horizontalmente
+            ){
+                CustomText()
+                Picture()
+                Content1()
+                Content2()
+                //Text(text = "Simple Text")
+                //ModifierExample()
+                //ModifierExample2()
+                //ModifierExample3()
             }
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            // Barra Superior (Header)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp)
-                    .height(50.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Icono de Perfil con sangría hacia la izquierda
-                Image(
-                    painter = painterResource(id = R.drawable.ksuwu),
-                    contentDescription = "Profile",
-                    modifier = Modifier
-                        .padding(start = 5.dp)
-                        .size(30.dp)
-                        .clip(CircleShape)
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.logox),
-                    contentDescription = "Twitter Logo",
-                    modifier = Modifier.size(20.dp)
-                )
-                // Icono de Configuración con sangría hacia la derecha
-                Image(
-                    painter = painterResource(id = R.drawable.settings),
-                    contentDescription = "Settings",
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .size(18.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            // Barra de pestañas "Para ti" y "Siguiendo"
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 50 .dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TabButton(
-                    text = "Para ti",
-                    isSelected = selectedTab == 0,
-                    onClick = { selectedTab = 0 }
-                )
-                TabButton(
-                    text = "Siguiendo",
-                    isSelected = selectedTab == 1,
-                    onClick = { selectedTab = 1 }
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            // Feed de Tweets
-            LazyColumn {
-                items(tweets) { tweet ->
-                    TweetCard(tweet)
+
+
+            //layouts
+            /*Column{ //The main component // Solo se pone una vez
+                Text(text="First Row")
+                Text(text="Second Row")
+                Text(text="Third Row")
+                Row{
+                    Text(text="TEXT 1")
+                    Text(text = "TEXT1")
+                    Text(text = "TEXT1")
+                    Text(text = "TEXT1")
+                    Text(text = "TEXT1")
+                    Text(text = "TEXT1")
+
                 }
-            }
-        }
-    }
-}
-
-// Barra de navegación inferior
-@Composable
-fun BottomNavigationBar(selectedItem: Int, onItemSelected: (Int) -> Unit) {
-    BottomNavigation(
-        backgroundColor = Color.White
-    ) {
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.home),
-                    contentDescription = "Home",
-                    modifier = Modifier.size(20.dp)
-                )
-            },
-            selected = selectedItem == 0,
-            onClick = { onItemSelected(0) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.search),
-                    contentDescription = "Search",
-                    modifier = Modifier.size(20.dp)
-                )
-            },
-            selected = selectedItem == 1,
-            onClick = { onItemSelected(1) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.slash),
-                    contentDescription = "Grok",
-                    modifier = Modifier.size(20.dp)
-                )
-            },
-            selected = selectedItem == 2,
-            onClick = { onItemSelected(2) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.users),
-                    contentDescription = "Friends",
-                    modifier = Modifier.size(20.dp)
-                )
-            },
-            selected = selectedItem == 3,
-            onClick = { onItemSelected(3) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.notification),
-                    contentDescription = "Notifications",
-                    modifier = Modifier.size(20.dp)
-                )
-            },
-            selected = selectedItem == 4,
-            onClick = { onItemSelected(4) }
-        )
-        BottomNavigationItem(
-            icon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.mensaje),
-                    contentDescription = "Messages",
-                    modifier = Modifier.size(20.dp)
-                )
-            },
-            selected = selectedItem == 5,
-            onClick = { onItemSelected(5) }
-        )
-    }
-}
-
-@Composable
-fun TabButton(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    textSize: TextUnit = 16.sp,
-    textColor: Color = Color.Gray,
-    indicatorColor: Color = Color(0xFF1DA1F2),
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = text,
-            fontWeight = FontWeight.Bold,
-            fontSize = textSize,
-            color = if (isSelected) indicatorColor else textColor,
-            modifier = Modifier.clickable(onClick = onClick)
-        )
-        if (isSelected) {
-            Spacer(modifier = Modifier.height(4.dp))
-            Box(
-                modifier = Modifier
-                    .height(2.dp)
-                    .width(100.dp)
-                    .background(indicatorColor)
-            )
-        }
-    }
-}
-
-data class TweetData(
-    val authorName: String,
-    val username: String,
-    val content: String,
-    val profileImageResId: Int,
-    val imageResId: Int? = null,
-    val commentsCount: String = "",
-    val retweetsCount: String = "",
-    val likesCount: String = "",
-    val statisticsCount: String = "",
-    val savesCount: String = "",
-    val sharesCount: String = ""
-)
-
-@Composable
-fun TweetCard(tweet: TweetData) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 1.dp),
-        elevation = 1.dp
-    ) {
-        Column(modifier = Modifier.padding(7.dp)) {
-            // Encabezado del Tweet
-            Row(
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                // Imagen de perfil
-                Image(
-                    painter = painterResource(id = tweet.profileImageResId),
-                    contentDescription = "Author",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-
-                // Columna con nombre del autor, nombre de usuario y contenido del tweet
-                Column {
-                    // Nombre del autor y nombre de usuario en la misma línea
-                    Row {
-                        Text(
-                            text = tweet.authorName,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        Text(
-                            text = tweet.username,
-                            color = Color.Gray
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(3.dp))
-
-                    // Contenido del Tweet alineado con el nombre y usuario
-                    Text(
-                        text = tweet.content,
-                        modifier = Modifier.padding(end = 16.dp), // Sangría del lado derecho
-                        textAlign = TextAlign.Justify // Justifica el texto
-                    )
-
-                    // Si hay una imagen adjunta en el tweet
-                    tweet.imageResId?.let {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Image(
-                            painter = painterResource(id = it),
-                            contentDescription = "Tweet Image",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(1f)
-                                .clip(RoundedCornerShape(8.dp))
-                        )
-                    }
-
-                   // Spacer(modifier = Modifier.height(0.dp))
-
-                    // Íconos de interacción alineados con el contenido del Tweet
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        InteractionIconWithCount(
-                            iconResId = R.drawable.comentario,
-                            count = tweet.commentsCount,
-                            contentDescription = "Comment"
-                        )
-                        InteractionIconWithCount(
-                            iconResId = R.drawable.rt,
-                            count = tweet.retweetsCount,
-                            contentDescription = "Retweet"
-                        )
-                        InteractionIconWithCount(
-                            iconResId = R.drawable.heart,
-                            count = tweet.likesCount,
-                            contentDescription = "Like"
-                        )
-                        InteractionIconWithCount(
-                            iconResId = R.drawable.stadistics,
-                            count = tweet.statisticsCount,
-                            contentDescription = "Statistics"
-                        )
-                        InteractionIconWithCount(
-                            iconResId = R.drawable.save,
-                            count = tweet.savesCount,
-                            contentDescription = "Save"
-                        )
-                        InteractionIconWithCount(
-                            iconResId = R.drawable.share,
-                            count = tweet.sharesCount,
-                            contentDescription = "Share"
-                        )
-                    }
+                Box{ //Encima los elementos
+                    Text(text = "Label 1")
+                    Text(text = "Label 2")
                 }
+                Greeting(name = "World")
             }
+//            Myapp2Theme {
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        name = "Android",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//
+    }*/
+            }*/
         }
     }
 }
-
-
-
-
-@Composable
-fun InteractionIconWithCount(
-    iconResId: Int,
-    count: String,
-    contentDescription: String,
-    textSize: TextUnit = 12.sp, // Parámetro para cambiar el tamaño del texto
-    textColor: Color = Color.Gray, // Parámetro para cambiar el color del texto
-    fontWeight: FontWeight = FontWeight.Normal // Parámetro para cambiar el grosor del texto
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        IconButton(onClick = { /* Handle Click */ }) {
-            Icon(
-                painter = painterResource(id = iconResId),
-                contentDescription = contentDescription,
-                modifier = Modifier.size(12.dp)
-            )
-        }
-        Spacer(modifier = Modifier.width(0.dp))
-        Text(
-            text = count,
-            color = textColor,
-            fontWeight = fontWeight,
-            fontSize = textSize, // Utilizamos el tamaño de texto personalizable
-            textAlign = TextAlign.Left,
-            modifier = Modifier.padding(vertical = 1.dp)
-        )
-    }
-
-}
-
-
-
-// Cada Composable es un elemento visible
-/*@Composable
+/*
+//Cada Composable es un elemento visible
+@Composable //Fragmento o componente de diseño
 fun Greeting(name: String, modifier: Modifier = Modifier) {
+    //Modifier te permite acceder a ciertas propiedades de los elementos
     Text(
         text = "Hello $name!",
         modifier = modifier
     )
-}men
+}
 
-@Preview(showBackground = true)
+@Preview(showBackground = true) //Si este se modifica, se muestra en tiempo real
 @Composable
 fun GreetingPreview() {
     Myapp2Theme {
-        Greeting("Cass")
+        Greeting("Tony")
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ModifierExample() {
+fun ModifierExample(){
     Column(
-        modifier = Modifier.padding(24.dp)
-    ) {
-        Text(text = "Hello World")
+        modifier=Modifier
+            .padding(24.dp) //dp es la medida en android
+
+
+    ){
+        Text(text="Hello World")
+
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ModifierExample2(){
+    Column(
+        modifier= Modifier
+            .padding(24.dp) //dp es la medida en android
+            .fillMaxWidth()
+            .clickable(onClick = { clickAction() }) //Evento de click
+    ){
+        Text(text="Hello World")
+
+    }
+}
+
+fun clickAction(){
+    println("Column Clicked")
+}
+
+@Composable
+fun ModifierExample3(){
+    Column(
+        modifier = Modifier
+            .fillMaxHeight() //Ocupa todo el ancho
+            .padding(16.dp)
+            .background(Color.Cyan) // Color de la columna
+            .border(width = 2.dp, color = Color.Green)
+            .width(200.dp),
+        horizontalAlignment = Alignment.CenterHorizontally, //Propias de Android Compose
+        verticalArrangement = Arrangement.SpaceEvenly
+    ){
+        Text(text = "Item 1")
+        Text(text = "Item 2")
+        Text(text = "Item 3")
+        Text(text = "Item 4")
+        Text(text = "Item 5")
     }
 }
 
 @Composable
-fun CustomText() {
-    Column {
-        Text(
-            text = stringResource(R.string.Hello_World_Text),
-            color = colorResource(R.color.purple_700),
+fun CustomText(){
+    Column{
+        Text(//String que está en /res/values/strings.xml
+            stringResource(R.string.hello_world_text),
+            //Color que está en /res/values/colors.xml
+            color =  colorResource(R.color.purple_700),
             fontSize = 28.sp,
-            fontStyle = FontStyle.Italic,
+            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
             fontWeight = FontWeight.ExtraBold
         )
-        val gradientColors = listOf(Color.Cyan, Color.Blue)
-        Text(
-            text = stringResource(R.string.Hello_World_Text),
-            style = TextStyle(brush = Brush.linearGradient(gradientColors))
+        val gradientColors = listOf(Color.Cyan,Color.Blue, Color.Red)
+        Text(stringResource(R.string.hello_world_text),
+            style = TextStyle(brush = Brush.linearGradient(colors = gradientColors))
         )
     }
 }
 
+
 @Composable
-fun Picture() {
-    Box(
+fun Picture(){
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Black)
-    ) {
+    ){
+
+        //Agregar una imagen
         Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(R.drawable.androidlogo),
-            contentDescription = "Logo Android",
-            contentScale = ContentScale.Crop
+            modifier= Modifier
+                .fillMaxWidth(),
+            //Imagen importada en res/drawable/sushi.png
+            painter = painterResource(R.drawable.sushi),
+            contentDescription = "Sushi item",
+            contentScale = ContentScale.Crop //Investigar scales
         )
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
-fun Content1() {
+fun Content1(){
     Card(
         modifier = Modifier
             .background(Color.LightGray)
             .fillMaxWidth()
             .padding(5.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(10.dp)
-        ) {
-            Text(
-                text = "This is a title",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 10.dp)
-            )
+    ){//New component
+
+        Row{
             Image(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                painter = painterResource(id = R.drawable.androidlogo),
-                contentDescription = "Android Logo",
-                contentScale = ContentScale.Crop
+                painter = painterResource(id = R.drawable.sushi),
+                contentDescription = "Sushi item",
+                contentScale = ContentScale.Crop, //Check
+                modifier=Modifier
+                    .fillMaxHeight()
+                    //.height(.dp)
             )
+            Column{
+                Text(
+                    text = "This is a title",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+                Text(stringResource(id = R.string.text_card),
+                    textAlign = TextAlign.Justify,
+                    lineHeight = 18.sp,
+                    maxLines = 4, //Máximo de líneas
+                    modifier =Modifier
+                        .padding(10.dp))
 
-            Text(text = "Test")
+            }
 
-            Text(
-                text = stringResource(R.string.uwu),
-                textAlign = TextAlign.Justify,
-                lineHeight = 10.sp,
-                modifier = Modifier
-                    .padding(10.dp)
-            )
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun Content2() {
+fun Content2(){
     Card(
         modifier = Modifier
             .background(Color.LightGray)
             .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        Row(
+            .padding(5.dp)
+    ){//New component
+        Text(
+            text = "This is a title",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(20.dp)
-        ) {
-            // Imagen a la izquierda
+                .padding(10.dp)
+        )
+
             Image(
-                painter = painterResource(id = R.drawable.androidlogo),
-                contentDescription = "Android logo",
-                modifier = Modifier
-                    .height(100.dp)
-                    .width(100.dp),
-                contentScale = ContentScale.Crop
+                painter = painterResource(id = R.drawable.sushi),
+                contentDescription = "Sushi item",
+                contentScale = ContentScale.Crop, //Check
+                modifier=Modifier
+                    .fillMaxWidth()
+                //.height(.dp)
             )
+            Text(stringResource(id = R.string.text_card),
+                textAlign = TextAlign.Justify,
+                lineHeight = 18.sp,
+                modifier =Modifier
+                    .padding(10.dp))
 
-            // Texto a la derecha de la imagen
-            Column(
-                modifier = Modifier
-                    .padding(start = 20.dp)
-            ) {
-                // Título
-                Text(
-                    text = "Titul0",
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                Text(
-                    text = "Hola",
-                    fontSize = 18.sp,
-                    fontStyle = FontStyle.Italic
-                )
-            }
-        }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun BoxExample1() {
-    Box(
+fun BoxExample1(){
+    Box( //Permite que se pongan fondos //Pone un objeto arriba de otro
         modifier = Modifier
             .background(Color.DarkGray)
             .fillMaxWidth()
             .padding(5.dp)
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.androidlogo),
-            contentDescription = "Android Logo",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .fillMaxSize()
+    ){
+        Image(painterResource(id = R.drawable.sushi),
+            contentDescription = "Sushi item",
+            contentScale = ContentScale.FillBounds //Llena el 100% del espacio
         )
 
-        // Ajustamos el Row dentro del Box
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 150.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            // Ícono
-            Icon(
-                painter = painterResource(R.drawable.ic_account_box),
-                contentDescription = "Icon"
-            )
+            modifier=Modifier
+                //.fillMaxWidth()
+                .fillMaxSize(),
+                //.padding(0.dp, 150.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
 
-            // Texto
-            Text(text = "Text")
+        )
+        {
+
+            Icon(imageVector = Icons.Filled.AccountBox, contentDescription = "Icon Account")
+            Text(text="Text"
+                /*textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 10.dp)*/)
         }
+
+
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun BoxExample2() {
+fun BoxExample2(){
     Box(
-        modifier = Modifier
+        modifier=Modifier
             .background(Color.Magenta)
             .padding(5.dp)
             .size(250.dp)
-    ) {
-        Text(text = "TopStart", Modifier.align(Alignment.TopStart))
-        Text(text = "TopEnd", Modifier.align(Alignment.TopEnd))
-        Text(text = "CenterStart", Modifier.align(Alignment.CenterStart))
-        Text(text = "Center", Modifier.align(Alignment.Center))
-        Text(text = "CenterEnd", Modifier.align(Alignment.CenterEnd))
-        Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
-        Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
+    ){
+        Text(text = "TopStart", modifier=Modifier.align((Alignment.TopStart)))
+        Text(text = "TopCenter", modifier=Modifier.align((Alignment.TopCenter)))
+        Text(text = "TopEnd", modifier=Modifier.align((Alignment.TopEnd)))
+
+        Text(text = "CenterStart", modifier=Modifier.align((Alignment.CenterStart)))
+        Text(text = "Center", modifier=Modifier.align((Alignment.Center)))
+        Text(text = "CenterEnd", modifier=Modifier.align((Alignment.CenterEnd)))
+
+
+
+        Text(text = "BottomStart", modifier=Modifier.align((Alignment.BottomStart)))
+        Text(text = "BottomCenter", modifier=Modifier.align((Alignment.BottomCenter)))
+        Text(text = "BottomEnd", modifier=Modifier.align((Alignment.BottomEnd)))
+
     }
-}**/
+}*/
 
 @Composable
-fun ComposeMultiScreenApp() {
+fun ComposeMultiScreenApp(){
     val navController = rememberNavController()
-    Surface(color = Color.White) {
-        SetupNavGraph(navController = navController)
+    Surface(color=Color.White){
+        SetupNavGraph(navController=navController) //función propia //crea el grafo recordando el navcontroller donde nos encontramos
     }
 }
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "menu") {
-        composable(route = "menu") { MenuScreen(navController) }
-        composable(route = "home") { HomeScreen(navController) }
-        composable(route = "components") { ComponentsScreen(navController) }
+fun SetupNavGraph(navController: NavHostController){
+    NavHost(navController = navController, startDestination = "menu"){ //índice de pantallas //Usa el nav controller de ahorita y empieza desde el índice definido
+        composable("menu"){ MenuScreen(navController) } //Rutas
+        composable("home"){ HomeScreen(navController) }
+        composable("components"){ ComponentsScreen(navController) }
     }
+
 }
-
-
-
-
