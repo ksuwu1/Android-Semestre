@@ -1,8 +1,7 @@
 package com.ita.myapp.classes.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.content.MediaType.Companion.Image
-import androidx.compose.foundation.content.MediaType.Companion.Text
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

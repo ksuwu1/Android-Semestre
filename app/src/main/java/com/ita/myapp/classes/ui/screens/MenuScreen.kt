@@ -8,15 +8,22 @@ import androidx.navigation.NavController
 
 @Composable
 fun MenuScreen(navController: NavController){
-    Column(){
-        Text(text="This is the Menu Screen")
-        Button(onClick = { navController.navigate("home")}) {
-            Text(text= "Home")
-
+    Column{
+        Text(text="This is the HomeScreen")
+        Button(onClick = { navController.navigate("menu")}) {
+            Text(text= "Menu")
         }
-        Text(text="This is the ComponentsScreen")
-        Button(onClick = { navController.navigate("components")}) {
-            Text(text= "Components")
+
+        Column{
+            Text(text="This is the APisScreen")
+            Button(onClick = { navController.navigate("apis")}) {
+                Text(text= "APis")
+            }
+
+            Text(text="This is the ComponentsScreen")
+            Button(onClick = { navController.navigate("components")}) {
+                Text(text= "Components")
+            }
         }
     }
 }

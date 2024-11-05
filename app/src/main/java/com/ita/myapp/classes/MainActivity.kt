@@ -3,6 +3,7 @@ package com.ita.myapp.classes
 import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.view.Menu
+import android.view.WindowInsets
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -53,9 +54,16 @@ import kotlin.math.max
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ita.myapp.classes.ui.screens.APisScreen
 import com.ita.myapp.classes.ui.screens.HomeScreen
 import com.ita.myapp.classes.ui.screens.ComponentsScreen
 import com.ita.myapp.classes.ui.screens.MenuScreen
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.ita.myapp.classes.ui.screens.LoginScreen
+
 
 //import androidx.navigation.compose.NavHostController
 
@@ -63,11 +71,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge() // Colors also baterry and stuff bar
-        setContent { //Lo que se imprime en pantalla
-            ComposeMultiScreenApp()
+        setContent {
+            ProvideWindowInsets{
+                ComposeMultiScreenApp()
+            }
+            //Lo que se imprime en pantalla
+
             /*Column(
                 modifier= Modifier
-                    .fillMaxSize() //De esa columna ocupa todo el espacio
+                    .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Center, //Donde lo quieres alinear de forma vertical
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally //Centrarlo horizontalmente
@@ -364,19 +376,23 @@ fun BoxExample2(){
 }*/
 
 @Composable
-fun ComposeMultiScreenApp(){
+fun ComposeMultiScreenApp() {
     val navController = rememberNavController()
-    Surface(color=Color.White){
-        SetupNavGraph(navController=navController) //función propia //crea el grafo recordando el navcontroller donde nos encontramos
+    Surface(
+        color = Color.White,
+        modifier = Modifier.statusBarsPadding()
+    ) {
+        SetupNavGraph(navController = navController)
     }
 }
 
 @Composable
-fun SetupNavGraph(navController: NavHostController){
-    NavHost(navController = navController, startDestination = "menu"){ //índice de pantallas //Usa el nav controller de ahorita y empieza desde el índice definido
-        composable("menu"){ MenuScreen(navController) } //Rutas
-        composable("home"){ HomeScreen(navController) }
-        composable("components"){ ComponentsScreen(navController) }
+fun SetupNavGraph(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = "login") { // Cambia "menu" por "login"
+        composable("menu") { MenuScreen(navController) }
+        composable("home") { HomeScreen(navController) }
+        composable("components") { ComponentsScreen(navController) }
+        composable("login") { LoginScreen(navController = navController) }
+        composable("apis") { APisScreen(navController) }
     }
-
 }
