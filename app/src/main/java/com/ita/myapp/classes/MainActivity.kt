@@ -62,6 +62,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.ita.myapp.classes.ui.location.MapsSearchView
 import com.ita.myapp.classes.ui.screens.LoginScreen
 
 
@@ -388,11 +389,19 @@ fun ComposeMultiScreenApp() {
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "login") { // Cambia "menu" por "login"
+    NavHost(navController = navController, startDestination = "login") {
         composable("menu") { MenuScreen(navController) }
         composable("home") { HomeScreen(navController) }
         composable("components") { ComponentsScreen(navController) }
-        composable("login") { LoginScreen(navController = navController) }
+        composable("login") { LoginScreen(navController) }
         composable("apis") { APisScreen(navController) }
+        composable("MapsSearchView/{lat}/{long}/{address}") { backStackEntry ->
+            val lat = backStackEntry.arguments?.getString("lat")?.toDouble() ?: 0.0
+            val long = backStackEntry.arguments?.getString("long")?.toDouble() ?: 0.0
+            val address = backStackEntry.arguments?.getString("address") ?: ""
+            MapsSearchView(lat, long, address)
+        }
     }
 }
+
+

@@ -3,6 +3,7 @@ package com.ita.myapp.classes.ui.screens
 import android.R.attr.id
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -23,8 +24,11 @@ import kotlinx.coroutines.launch
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.ita.myapp.classes.ui.location.HomeView
+import com.ita.myapp.classes.ui.location.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +45,7 @@ fun APisScreen(navController: NavController) {
     var selectedOption by rememberSaveable { mutableStateOf("") }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val searchVM: SearchViewModel = viewModel()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -72,7 +77,7 @@ fun APisScreen(navController: NavController) {
         ) {
             when (selectedOption) {
                 "BackgroundTasks" -> BackgroundTasksContent()
-                "LocationTracking" -> LocationTrackingContent()
+                "LocationTracking" -> LocationTrackingContent(navController, searchVM)
                 "ContactsCalendar" -> ContactsCalendarContent()
                 "BiometricSensors" -> BiometricSensorsContent()
                 "CameraFiles" -> CameraFilesContent()
@@ -137,9 +142,36 @@ fun BackgroundTasksContent() {
 
 
 @Composable
-fun LocationTrackingContent() {
-    Text("Contenido para Rastreo y geolocalización")
+fun LocationTrackingContent(navController: NavController, searchVM: SearchViewModel) {
+    // Mostrar la vista de entrada de dirección
+    HomeView(navController, searchVM)
+
+    // Verificar si los datos son válidos antes de navegar
+    OutlinedButton(onClick = {
+        try {
+            // Comprobar que las coordenadas no son nulas
+            if (searchVM.lat != 0.0 && searchVM.long != 0.0 && searchVM.address.isNotEmpty()) {
+                Log.d("APIScreen", "Lat: ${searchVM.lat}, Long: ${searchVM.long}, Address: ${searchVM.address}")
+                // Realizar la navegación solo si los valores son válidos
+                navController.navigate("MapsSearchView/${searchVM.lat}/${searchVM.long}/${searchVM.address}")
+            } else {
+                throw IllegalArgumentException("Coordenadas no válidas o dirección vacía")
+            }
+        } catch (e: Exception) {
+            // Captura cualquier error y lo registra en el log
+            Log.e("APIScreen", "Error al navegar o procesar la ubicación: ${e.message}")
+            e.printStackTrace()  // Imprimir traza del error
+            // Mostrar mensaje al usuario
+            Toast.makeText(navController.context, "Error al procesar la ubicación: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }) {
+        Text(text = "Enviar")
+    }
 }
+
+
+
+
 
 @Composable
 fun ContactsCalendarContent() {
