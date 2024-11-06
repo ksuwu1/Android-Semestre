@@ -94,7 +94,7 @@ dependencies {
 
 
     implementation("androidx.biometric:biometric:1.1.0")
-    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("androidx.appcompat:appcompat:1.7.0")
     implementation ("com.google.android.material:material:1.12.0")
 
 }
