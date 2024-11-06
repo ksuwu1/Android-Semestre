@@ -403,5 +403,3 @@ fun SetupNavGraph(navController: NavHostController) {
         }
     }
 }
-
-

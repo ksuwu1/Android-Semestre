@@ -91,4 +91,10 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44.2")
     //kapt("com.google.dagger:hilt-compiler:2.44.2") // Fix typo in your compiler dependency
     implementation("androidx.hilt:hilt-work:1.2.0")
+
+
+    implementation("androidx.biometric:biometric:1.1.0")
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("com.google.android.material:material:1.12.0")
+
 }
