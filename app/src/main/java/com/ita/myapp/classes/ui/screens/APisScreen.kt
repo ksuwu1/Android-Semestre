@@ -1,15 +1,14 @@
 
 package com.ita.myapp.classes.ui.screens
 
-import android.R.attr.id
 import android.content.Context
 import android.Manifest
 import android.content.ContentValues
-import android.content.pm.PackageManager
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -18,9 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -32,9 +29,11 @@ import kotlinx.coroutines.launch
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.ui.platform.LocalContext
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.ita.myapp.classes.ui.biometrics.BiometricPromptManager
 import com.ita.myapp.classes.ui.location.HomeView
 import com.ita.myapp.classes.ui.location.SearchViewModel
 import java.text.SimpleDateFormat
@@ -49,8 +48,7 @@ fun APisScreen(navController: NavController) {
         MenuModel(1, "Tareas en segundo plano", "BackgroundTasks", Icons.Filled.Schedule),
         MenuModel(2, "Rastreo y geolocalización", "LocationTracking", Icons.Filled.LocationOn),
         MenuModel(3, "Contactos y calendario", "ContactsCalendar", Icons.Filled.CalendarToday),
-        MenuModel(4, "Sensores biométricos", "BiometricSensors", Icons.Filled.Fingerprint),
-        MenuModel(5, "Cámara y archivos", "CameraFiles", Icons.Filled.PhotoCamera),
+      MenuModel(5, "Cámara y archivos", "CameraFiles", Icons.Filled.PhotoCamera),
         MenuModel(6, "WIFI y datos celulares", "WifiCellularData", Icons.Filled.Wifi)
     )
 
@@ -91,7 +89,6 @@ fun APisScreen(navController: NavController) {
                 "BackgroundTasks" -> BackgroundTasksContent()
                 "LocationTracking" -> LocationTrackingContent(navController, searchVM)
                 "ContactsCalendar" -> ContactsCalendarContent()
-                "BiometricSensors" -> BiometricSensorsContent()
                 "CameraFiles" -> CameraFilesContent()
                 "WifiCellularData" -> WifiCellularDataContent()
                 else -> Text("Seleccione una opción del menú")
@@ -451,10 +448,7 @@ fun saveEventToCalendar(context: Context, contact: String, startTimeInMillis: Lo
     }
 }
 
-@Composable
-fun BiometricSensorsContent() {
-    Text("Contenido para Sensores biométricos")
-}
+
 
 @Composable
 fun CameraFilesContent() {

@@ -24,40 +24,31 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 
 @Composable
-fun BiometricsScreen(navController: NavController, activity:AppCompatActivity){
-    val promptManager  by lazy{
-        /**
-         * by lazy means we initialize the value as soon
-         * as we access it the fist time
-         */
+fun BiometricsScreen(navController: NavController, activity: AppCompatActivity) {
+    val promptManager by lazy {
         BiometricPromptManager(activity)
     }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        //Access the flow to collect events
+        // Access the flow to collect events
         val biometricResult by promptManager.promptResults.collectAsState(initial = null)
 
-        // In order to fire and launch the activity
-        // to set a biometric or enroll it
+        // In order to fire and launch the activity to set a biometric or enroll it
         val enrollLauncher = rememberLauncherForActivityResult(
-            // We fire the StartActivityFor result to pop up an
-            // activity where the user can choose a pattern
             contract = ActivityResultContracts.StartActivityForResult(),
             onResult = {
                 println("Activity result: $it")
             }
         )
 
-        // To prompt the user to set a biometric
-        // signature in case it hasn't been set
+        // To prompt the user to set a biometric signature in case it hasn't been set
         LaunchedEffect(biometricResult) {
-            if(biometricResult is BiometricPromptManager.BiometricResult.AuthenticationNotSet){
-                if(Build.VERSION.SDK_INT >= 30){
+            if (biometricResult is BiometricPromptManager.BiometricResult.AuthenticationNotSet) {
+                if (Build.VERSION.SDK_INT >= 30) {
                     val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
                         putExtra(
                             Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
                             BIOMETRIC_STRONG or DEVICE_CREDENTIAL
-                            // Alt + Enter -> import that
                         )
                     }
                     // Fire the activity
@@ -65,14 +56,15 @@ fun BiometricsScreen(navController: NavController, activity:AppCompatActivity){
                 }
             }
         }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            //Simple button
+        ) {
+            // Simple button to start biometric authentication
             Button(onClick = {
                 promptManager.showBiometricPrompt(
                     title = "Sample prompt",
@@ -81,14 +73,11 @@ fun BiometricsScreen(navController: NavController, activity:AppCompatActivity){
             }) {
                 Text(text = "Authenticate")
             }
-            biometricResult?.let{ //like an if after the event
-                    result -> // Do something according to the result
-                Text(
-                    text = when(result){
-                        //Alt + Enter -> Add remaining branches
 
-                        //Select the first sentence before the dot
-                        // Alt+ Enter -> import memembers from ....
+            biometricResult?.let { result ->
+                // Handle biometric result and display feedback
+                Text(
+                    text = when (result) {
                         is BiometricPromptManager.BiometricResult.AuthenticationError -> {
                             result.error
                         }
@@ -99,6 +88,9 @@ fun BiometricsScreen(navController: NavController, activity:AppCompatActivity){
                             "Authentication not set"
                         }
                         BiometricPromptManager.BiometricResult.AuthenticationSuccess -> {
+                            // On successful authentication, navigate to HomeScreen
+                            // Redirect to HomeScreen after successful authentication
+                            navController.navigate("home")
                             "Authentication success"
                         }
                         BiometricPromptManager.BiometricResult.FeatureUnavailable -> {
@@ -109,7 +101,6 @@ fun BiometricsScreen(navController: NavController, activity:AppCompatActivity){
                         }
                     }
                 )
-
             }
         }
     }
