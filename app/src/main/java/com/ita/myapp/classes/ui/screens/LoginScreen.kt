@@ -103,7 +103,6 @@ fun LoginForm(navController: NavController){
                     navController.navigate("home")
                 }
             ) {
-                Text("LOG IN")
             }
 
             OutlinedButton(
