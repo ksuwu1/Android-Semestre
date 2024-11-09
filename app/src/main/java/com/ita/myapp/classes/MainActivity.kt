@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,6 +22,7 @@ import com.ita.myapp.classes.ui.screens.LoginScreen
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.ita.myapp.classes.ui.biometrics.BiometricsScreen
 import com.ita.myapp.classes.ui.location.MapsSearchView
+import com.ita.myapp.classes.ui.screens.CameraScreen
 
 class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -62,6 +64,9 @@ fun SetupNavGraph(navController: NavHostController, activity: AppCompatActivity)
             val address = backStackEntry.arguments?.getString("address") ?: ""
             MapsSearchView(lat, long, address)
         }
+        composable("CameraScreen") {
+            CameraScreen(context = LocalContext.current)
 
     }
+}
 }

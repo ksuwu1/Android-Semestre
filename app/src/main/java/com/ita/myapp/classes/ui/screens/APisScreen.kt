@@ -89,7 +89,7 @@ fun APisScreen(navController: NavController) {
                 "BackgroundTasks" -> BackgroundTasksContent()
                 "LocationTracking" -> LocationTrackingContent(navController, searchVM)
                 "ContactsCalendar" -> ContactsCalendarContent()
-                "CameraFiles" -> CameraFilesContent()
+                "CameraFiles" -> CameraFilesContent(navController)
                 "WifiCellularData" -> WifiCellularDataContent()
                 else -> Text("Seleccione una opción del menú")
             }
@@ -451,9 +451,23 @@ fun saveEventToCalendar(context: Context, contact: String, startTimeInMillis: Lo
 
 
 @Composable
-fun CameraFilesContent() {
-    Text("Contenido para Cámara y archivos")
+fun CameraFilesContent(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("Api Cámara y archivos")
+
+        // Botón para navegar a la pantalla de la cámara
+        Button(onClick = {
+            navController.navigate("CameraScreen")
+        }) {
+            Text("Ir a la cámara")
+        }
+    }
 }
+
 
 @Composable
 fun WifiCellularDataContent() {

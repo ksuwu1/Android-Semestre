@@ -80,7 +80,7 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation ("androidx.compose.material:material-icons-extended:1.7.5")
-    //
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     //-----------------------
     // Work Manager
     implementation("androidx.work:work-runtime:2.10.0")
