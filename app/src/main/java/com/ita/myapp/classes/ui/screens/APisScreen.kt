@@ -49,11 +49,11 @@ import android.net.ConnectivityManager
 @Composable
 fun APisScreen(navController: NavController) {
     val menuOptions = listOf(
-        MenuModel(1, "Tareas en segundo plano", "BackgroundTasks", Icons.Filled.Schedule),
+        MenuModel(1, "Tareas en segundo plano", "BackgroundTasks", Icons.Filled.LocationOn),
         MenuModel(2, "Rastreo y geolocalización", "LocationTracking", Icons.Filled.LocationOn),
-        MenuModel(3, "Contactos y calendario", "ContactsCalendar", Icons.Filled.CalendarToday),
-        MenuModel(5, "Cámara y archivos", "CameraFiles", Icons.Filled.PhotoCamera),
-        MenuModel(6, "WIFI y datos celulares", "WifiCellularData", Icons.Filled.Wifi)
+        MenuModel(3, "Contactos y calendario", "ContactsCalendar", Icons.Filled.LocationOn),
+        MenuModel(5, "Cámara y archivos", "CameraFiles", Icons.Filled.LocationOn),
+        MenuModel(6, "WIFI y datos celulares", "WifiCellularData", Icons.Filled.LocationOn)
     )
 
     var selectedOption by rememberSaveable { mutableStateOf("") }
