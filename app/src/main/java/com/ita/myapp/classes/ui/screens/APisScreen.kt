@@ -4,6 +4,8 @@ package com.ita.myapp.classes.ui.screens
 import android.content.Context
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
+import android.net.wifi.WifiManager
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import android.util.Log
@@ -40,6 +42,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
+import android.net.ConnectivityManager
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +94,7 @@ fun APisScreen(navController: NavController) {
                 "LocationTracking" -> LocationTrackingContent(navController, searchVM)
                 "ContactsCalendar" -> ContactsCalendarContent()
                 "CameraFiles" -> CameraFilesContent(navController)
-                "WifiCellularData" -> WifiCellularDataContent()
+                "WifiCellularData" -> WifiCellularDataContent(navController)
                 else -> Text("Seleccione una opción del menú")
             }
         }
@@ -470,6 +474,26 @@ fun CameraFilesContent(navController: NavController) {
 
 
 @Composable
-fun WifiCellularDataContent() {
-    Text("Contenido para WIFI y datos celulares")
+fun WifiCellularDataContent(navController: NavController) {
+    val context = LocalContext.current  // Esto está correcto dentro de una función composable
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        // Botón que lanza NetworkMonitorActivity
+        Button(onClick = {
+            // Crear el Intent y lanzar la actividad NetworkMonitorActivity
+            val intent = Intent(context, NetworkMonitorActivity::class.java)
+            context.startActivity(intent)
+        }) {
+            Text("Ir a Network Monitor")
+        }
+    }
 }
+
+
+
