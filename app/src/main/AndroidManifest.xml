@@ -38,6 +38,7 @@
         <!-- Maps -->
 
 
+
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA4uRUwSHcbfQRuEn2By0U0-oFPy73aoi4"/>
 
@@ -50,6 +51,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
         <activity android:name="com.ita.myapp.classes.ui.screens.NetworkMonitorActivity">

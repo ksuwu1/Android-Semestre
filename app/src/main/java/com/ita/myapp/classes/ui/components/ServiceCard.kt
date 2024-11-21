@@ -1,53 +1,37 @@
 package com.ita.myapp.classes.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-@Preview(showBackground = true)
-@Composable
-fun ServiceCardPreview() {
-    // Usar una imagen de recurso predeterminada para la vista previa
-    val dummyImage = painterResource(id = android.R.drawable.ic_menu_info_details) // Imagen predeterminada del sistema
-
-    ServiceCard(
-        id = 1,
-        title = "Servicio de ejemplo",
-        subtitle = "Subtítulo del servicio",
-        text = "Este es un texto descriptivo adicional sobre el servicio ofrecido. Puede incluir más detalles y características.",
-        image = dummyImage
-    )
-}
+import coil.compose.AsyncImage
+// Asegúrate de usar el paquete correcto para el recurso
 
 @Composable
 fun ServiceCard(
     id: Int,
-    title: String,
-    subtitle: String,
-    text: String,
-    image: Painter
+    name: String,
+    username: String,
+    imageURL: String?,
+    onButtonClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(3.dp),
-        shape = RoundedCornerShape(corner = CornerSize(8.dp)),
+            .padding(8.dp), // Ajuste para una mejor separación
         colors = CardDefaults.cardColors(
             containerColor = Color.Black,
             contentColor = Color.White
@@ -56,56 +40,45 @@ fun ServiceCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(8.dp), // Margen interno para el contenido
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Imagen a la izquierda
-            Image(
+            // Imagen del servicio
+            AsyncImage(
+                model = imageURL,
+                contentDescription = "Service Logo",
                 modifier = Modifier
-                    .width(80.dp)
-                    .height(80.dp)
-                    .padding(end = 10.dp),
-                painter = image,
-                contentDescription = "Imagen",
+                    .size(80.dp) // Tamaño compacto para la imagen
+                    .padding(end = 8.dp),
+                error = painterResource(R.drawable.androidlogo), // Recurso de imagen de error
                 contentScale = ContentScale.Crop
             )
-
-            // Column con título, subtítulo y botón
+            // Column para los textos
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 10.dp)
+                modifier = Modifier.weight(1f) // Usar peso para distribuir el espacio
             ) {
                 Text(
-                    text = title,
+                    text = name,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    modifier = Modifier.padding(bottom = 4.dp)
                 )
                 Text(
-                    text = subtitle,
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(top = 4.dp)
+                    text = username,
+                    fontSize = 15.sp
                 )
             }
-
-            // Botón a la derecha de los títulos
-            Button(
-                onClick = { /* Acción del botón */ },
-                modifier = Modifier.align(Alignment.CenterVertically)
+            // Botón de opciones
+            IconButton(
+                onClick = { onButtonClick() },
+                modifier = Modifier.padding(start = 8.dp)
             ) {
-                Text(text = "Botón", fontSize = 14.sp)
+                Icon(
+                    imageVector = Icons.Filled.MoreVert,
+                    contentDescription = "Service Details",
+                    tint = Color.White
+                )
             }
         }
-
-        // Texto adicional debajo
-        Text(
-            text = text,
-            fontSize = 16.sp,
-            color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        )
     }
 }
