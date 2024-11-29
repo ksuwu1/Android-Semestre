@@ -82,7 +82,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -108,8 +108,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.navigation.NavController
-import androidx.window.core.layout.WindowHeightSizeClass
-import androidx.window.core.layout.WindowWidthSizeClass
+
 import com.ita.myapp.classes.R
 import com.ita.myapp.classes.data.model.MenuModel
 import com.ita.myapp.classes.data.model.PostModel
@@ -403,9 +402,7 @@ fun ComponentsScreen(navController: NavController) {
                 "Bars"->{
                     Bars()
                 }
-                "Adaptive"->{
-                    Adaptive()
-                }
+
 
 
             }
@@ -1064,49 +1061,3 @@ fun PostGrid(arrayPosts : Array<PostModel>){
     }
 }
 
-@Preview(showBackground = true,device ="spec:id=reference_tablet,shape=Normal,width=1280,height=800,unit=dp,dpi=240")
-@Composable
-fun Adaptive(){
-    // Stores the dimensions of the actual screen
-    var WindowsSize = currentWindowAdaptiveInfo().windowSizeClass
-
-    //Sets variables with the height and width of the screen
-    var height = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
-    var width = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
-
-    /**
-     * Android handles 3 predifined dimensions
-     *
-     * COMPACT
-     * Compact width < 600dp Phone portrait
-     * Compact height < 480dp Phone landscape
-     *
-     * MEDIUM
-     * Medium width >= 600dp and width <840dp Tablets  portrait
-     * Medium height >=480dp and height < 900dp Tablets landscape or phone portrait
-     *
-     * EXPANDED
-     * Expanded width > 840dp Tablet landscape
-     * Expanded height > 900.dp Tablet in portrait
-     */
-    var post = arrayOf(
-        PostModel(1,"Title1","Text1",painterResource(R.drawable.zi)),
-        PostModel(2,"Title2","Text2",painterResource(R.drawable.zi)),
-        PostModel(3,"Title3","Text3",painterResource(R.drawable.zi)),
-        PostModel(4,"Title4","Text4",painterResource(R.drawable.zi)),
-        PostModel(5,"Title5","Text5",painterResource(R.drawable.zi)),
-        PostModel(6,"Title6","Text6",painterResource(R.drawable.zi)),
-        PostModel(7,"Title7","Text7",painterResource(R.drawable.zi)),
-        PostModel(8,"Title8","Text8",painterResource(R.drawable.zi)),
-        PostModel(9,"Title9","Text9",painterResource(R.drawable.zi)),
-        PostModel(10,"Title10","Text10",painterResource(R.drawable.zi)),
-    )
-    if(width == WindowWidthSizeClass.COMPACT){
-        Posts(post, "PhoneP") //PhoneP = Phone PORTRAIT
-    }else if(height == WindowHeightSizeClass.COMPACT){
-        Posts(post, "PhoneL") //PhoneP = Phone LANDSCAPE
-    }else{
-        Posts(post, "PhoneL")
-    }
-    //Text(text=WindowsSize.toString())
-}

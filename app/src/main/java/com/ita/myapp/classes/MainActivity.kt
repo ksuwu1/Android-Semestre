@@ -21,6 +21,7 @@ import com.ita.myapp.classes.ui.screens.MenuScreen
 import com.ita.myapp.classes.ui.screens.LoginScreen
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.ita.myapp.classes.ui.biometrics.BiometricsScreen
+import com.ita.myapp.classes.ui.components.ManageServiceScreen
 import com.ita.myapp.classes.ui.location.MapsSearchView
 import com.ita.myapp.classes.ui.screens.CameraScreen
 
@@ -50,7 +51,7 @@ fun ComposeMultiScreenApp(activity: AppCompatActivity) {
 
 @Composable
 fun SetupNavGraph(navController: NavHostController, activity: AppCompatActivity) {
-    NavHost(navController = navController, startDestination = "biometrics") {
+    NavHost(navController = navController, startDestination = "login") {
         composable("menu") { MenuScreen(navController) }
         composable("home") { HomeScreen(navController) }
         composable("components") { ComponentsScreen(navController) }
@@ -67,6 +68,11 @@ fun SetupNavGraph(navController: NavHostController, activity: AppCompatActivity)
         composable("CameraScreen") {
             CameraScreen(context = LocalContext.current)
 
+        }
+        //ManageService
+        composable("manange-service/{serviceId}"){ backStrackEntry ->
+            val serviceId = backStrackEntry.arguments?.getString("serviceId")
+            ManageServiceScreen(navController = navController, serviceId = serviceId)
         }
     }
 }

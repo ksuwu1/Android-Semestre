@@ -1,12 +1,14 @@
 package com.ita.myapp.classes.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.Image
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,11 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
-// Asegúrate de usar el paquete correcto para el recurso
+import coil.compose.rememberImagePainter
+import com.ita.myapp.classes.R
+
 
 @Composable
 fun ServiceCard(
@@ -31,7 +35,7 @@ fun ServiceCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp), // Ajuste para una mejor separación
+            .padding(3.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.Black,
             contentColor = Color.White
@@ -40,22 +44,23 @@ fun ServiceCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp), // Margen interno para el contenido
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Imagen del servicio
             AsyncImage(
-                model = imageURL,
-                contentDescription = "Service Logo",
                 modifier = Modifier
-                    .size(80.dp) // Tamaño compacto para la imagen
-                    .padding(end = 8.dp),
-                error = painterResource(R.drawable.androidlogo), // Recurso de imagen de error
-                contentScale = ContentScale.Crop
+                    .width(80.dp)
+                    .height(80.dp)
+                    .padding(10.dp),
+                model = imageURL,
+                error = painterResource(R.drawable.androidlogo),
+                contentDescription = "Service logo",
+                contentScale = ContentScale.FillBounds
             )
-            // Column para los textos
             Column(
-                modifier = Modifier.weight(1f) // Usar peso para distribuir el espacio
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp)
             ) {
                 Text(
                     text = name,
@@ -68,10 +73,8 @@ fun ServiceCard(
                     fontSize = 15.sp
                 )
             }
-            // Botón de opciones
             IconButton(
-                onClick = { onButtonClick() },
-                modifier = Modifier.padding(start = 8.dp)
+                onClick = { onButtonClick() }
             ) {
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
