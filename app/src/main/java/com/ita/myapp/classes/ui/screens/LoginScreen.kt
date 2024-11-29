@@ -30,20 +30,80 @@ import androidx.compose.ui.unit.max
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import android.widget.Toast
+import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.TextField
+import com.ita.myapp.classes.data.model.network.RetrofitClient
+import com.ita.myapp.classes.data.model.network.ApiService
+import com.ita.myapp.classes.data.model.network.LoginRequest
+import retrofit2.Response
+
 
 @Composable
-fun LoginScreen(navController: NavController){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
-            .background(Color.Black)
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ){
-        LoginForm(navController)
+fun LoginScreen(navController: NavController) {
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var loginTrigger by remember { mutableStateOf(false) } // Trigger for login
+
+    // Function to handle login (as a suspend function)
+    suspend fun login() {
+        isLoading = true
+        val loginRequest = LoginRequest(username, password)
+        val response: Response<Unit> = RetrofitClient.api.login(loginRequest)
+        isLoading = false
+        if (response.isSuccessful) {
+            navController.navigate("menu")
+        } else {
+            errorMessage = "Invalid username or password"
+        }
+    }
+
+    // Observe the login trigger and call the suspend function when triggered
+    LaunchedEffect(loginTrigger) {
+        if (loginTrigger) {
+            login()
+            loginTrigger = false // Reset the trigger after login attempt
+        }
+    }
+
+    // Display UI
+    Column {
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = {
+                // Trigger the login process
+                loginTrigger = true
+            },
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
+        ) {
+            Text("Login")
+        }
+        if (isLoading) {
+            CircularProgressIndicator(modifier = Modifier.padding(top = 8.dp))
+        }
+        errorMessage?.let {
+            Text(text = it, color = Color.Red, modifier = Modifier.padding(top = 8.dp))
+        }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
