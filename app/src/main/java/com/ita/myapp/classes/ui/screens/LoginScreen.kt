@@ -57,7 +57,11 @@ fun LoginScreen(navController: NavController) {
         val response: Response<Unit> = RetrofitClient.api.login(loginRequest)
         isLoading = false
         if (response.isSuccessful) {
-            navController.navigate("menu")
+            // Navigate to HomeScreen if login is successful
+            navController.navigate("home") {
+                // Optionally, clear the back stack if needed
+                popUpTo("login") { inclusive = true }
+            }
         } else {
             errorMessage = "Invalid username or password"
         }
@@ -72,7 +76,12 @@ fun LoginScreen(navController: NavController) {
     }
 
     // Display UI
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp)
+    ) {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
@@ -103,6 +112,7 @@ fun LoginScreen(navController: NavController) {
         }
     }
 }
+
 
 
 @Preview(showBackground = true)
