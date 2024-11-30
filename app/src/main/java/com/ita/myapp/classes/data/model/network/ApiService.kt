@@ -11,9 +11,6 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
-    @POST("user")
-    suspend fun login(@Body loginRequest: LoginRequest): Response<Unit>
-
     @GET("service")
     suspend fun getServices(): Response<List<ServiceModel>>
 
@@ -24,10 +21,13 @@ interface ApiService {
     suspend fun createService(@Body service: ServiceModel): Response<ServiceModel>
 
     @PUT("service/{id}")
-    suspend fun updateService(@Path("id") id: Int, @Body service: ServiceModel): Response<ServiceModel>
+    suspend fun updateService(@Path("id") id:Int, @Body service: ServiceModel): Response<ServiceModel>
 
     @DELETE("service/{id}")
-    suspend fun deleteService(@Path("id") id: Int): Response<ServiceModel>
+    suspend fun deleteService(@Path("id") id:Int):Response<ServiceModel>
+
+    @POST("user")
+    suspend fun login(@Body loginRequest: LoginRequest): Response<Unit>
 }
 
 data class LoginRequest(

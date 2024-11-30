@@ -70,7 +70,7 @@ fun SetupNavGraph(navController: NavHostController, activity: AppCompatActivity)
 
         }
         //ManageService
-        composable("manange-service/{serviceId}"){ backStrackEntry ->
+        composable("manage-service/{serviceId}"){ backStrackEntry ->
             val serviceId = backStrackEntry.arguments?.getString("serviceId")
             ManageServiceScreen(navController = navController, serviceId = serviceId)
         }

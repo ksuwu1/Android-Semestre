@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ita.myapp.classes.R
 import com.ita.myapp.classes.data.model.controller.ServiceViewModel
@@ -38,21 +39,22 @@ import com.ita.myapp.classes.ui.components.ServiceDetailCard
 import com.ita.myapp.classes.ui.components.TopBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.ita.myapp.classes.data.model.database.AppDatabase
+
 import com.ita.myapp.classes.data.model.database.DatabaseProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen (navController: NavController, viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
 
-    var serviceDetail by remember { mutableStateOf<ServiceModel?>(null) }
-    var sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = false
-    )
+    var serviceDetail by remember { mutableStateOf<ServiceEntity?>(null) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    var services by remember {mutableStateOf<List<ServiceEntity>>(emptyList())}
+    var services by remember { mutableStateOf<List<ServiceEntity>>(emptyList()) }
     val serviceDao = db.serviceDao()
 
     Scaffold(
@@ -61,51 +63,59 @@ fun HomeScreen (navController: NavController, viewModel: ServiceViewModel = andr
             BottomAppBar(
                 containerColor = Color.Black,
                 contentColor = Color.White
-            ) {
+            ){
             }
         },
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = colorResource(R.color.purple_500),
                 contentColor = Color.Black,
-                onClick = {
-                    navController.navigate("manage-service/0")
-                }) {
+                onClick = { navController.navigate("manage-service/0") }
+            ) {
                 Icon(Icons.Default.Add, contentDescription = "Add icon")
             }
         }
-    ){ innerPadding ->
+    ) { innerPadding ->
 
+        // Cargar servicios al iniciar la pantalla
         LaunchedEffect(Unit) {
-            services =  withContext(Dispatchers.IO) {
-                viewModel.getServices(db)
-                serviceDao.getAll()
+            services = withContext(Dispatchers.IO) {
+                serviceDao.getAll() // Obtener todos los servicios de la base de datos
             }
         }
 
         val listState = rememberLazyListState()
-        LazyColumn (
+
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
                 .background(colorResource(R.color.black))
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(bottom = 64.dp), // Aquí le agregamos un margen en la parte inferior
             state = listState
-        ){
-            Log.d("debuginfo",services.toString())
-            items(services){ service ->
-                ServiceCard(service.id, service.name , service.username, service.imageURL,
+        ) {
+            items(services) { service ->
+                ServiceCard(
+                    service.id,
+                    service.name,
+                    service.username,
+                    service.imageURL,
                     onButtonClick = {
-                        viewModel.showService(service.id){ response ->
-                            if(response.isSuccessful){
-                                serviceDetail = response.body()
+                        viewModel.showService(db, service.id) { entity ->
+                            if (entity != null) {
+                                serviceDetail = entity // Actualizar detalles del servicio
+                                showBottomSheet = true // Mostrar el modal
+                            } else {
+                                Log.d("error", "No se encontró el servicio.")
                             }
                         }
-                        showBottomSheet=true
                     }
                 )
             }
         }
-        if(showBottomSheet){
+
+        // Mostrar ModalBottomSheet si showBottomSheet es true
+        if (showBottomSheet) {
             ModalBottomSheet(
                 containerColor = colorResource(id = R.color.purple_200),
                 contentColor = Color.White,
@@ -116,10 +126,10 @@ fun HomeScreen (navController: NavController, viewModel: ServiceViewModel = andr
                 ServiceDetailCard(
                     id = serviceDetail?.id ?: 0,
                     name = serviceDetail?.name ?: "",
-                    username = serviceDetail?.username?:"",
-                    password = serviceDetail?.password?:"",
-                    description = serviceDetail?.description?:"",
-                    imageURL = serviceDetail?.imageURL.toString(),
+                    username = serviceDetail?.username ?: "",
+                    password = serviceDetail?.password ?: "",
+                    description = serviceDetail?.description ?: "",
+                    imageURL = serviceDetail?.imageURL,
                     onEditClick = {
                         showBottomSheet = false
                         navController.navigate("manage-service/" + serviceDetail?.id)

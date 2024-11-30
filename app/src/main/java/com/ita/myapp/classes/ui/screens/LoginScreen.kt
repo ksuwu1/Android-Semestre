@@ -31,6 +31,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import android.widget.Toast
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.*
 import androidx.compose.material.*
 import androidx.compose.material3.Button
@@ -46,20 +48,14 @@ import retrofit2.Response
 fun LoginScreen(navController: NavController) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var loginTrigger by remember { mutableStateOf(false) } // Trigger for login
+    var loginTrigger by remember { mutableStateOf(false) }
 
-    // Function to handle login (as a suspend function)
     suspend fun login() {
-        isLoading = true
         val loginRequest = LoginRequest(username, password)
         val response: Response<Unit> = RetrofitClient.api.login(loginRequest)
-        isLoading = false
         if (response.isSuccessful) {
-            // Navigate to HomeScreen if login is successful
             navController.navigate("home") {
-                // Optionally, clear the back stack if needed
                 popUpTo("login") { inclusive = true }
             }
         } else {
@@ -67,11 +63,10 @@ fun LoginScreen(navController: NavController) {
         }
     }
 
-    // Observe the login trigger and call the suspend function when triggered
     LaunchedEffect(loginTrigger) {
         if (loginTrigger) {
             login()
-            loginTrigger = false // Reset the trigger after login attempt
+            loginTrigger = false
         }
     }
 
@@ -81,107 +76,88 @@ fun LoginScreen(navController: NavController) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(16.dp)
+            .background(Color(0xFF212121))
     ) {
-        OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
-        )
-        Button(
-            onClick = {
-                // Trigger the login process
+        // Formulario de entrada
+        LoginForm(
+            username = username,
+            password = password,
+            onUsernameChange = { username = it },
+            onPasswordChange = { password = it },
+            onLoginClick = {
                 loginTrigger = true
-            },
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
-        ) {
-            Text("Login")
-        }
-        if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.padding(top = 8.dp))
-        }
+            }
+        )
+
+        // Mensaje de error
         errorMessage?.let {
-            Text(text = it, color = Color.Red, modifier = Modifier.padding(top = 8.dp))
+            Text(
+                text = it,
+                color = Color.Red,
+                modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
+            )
         }
     }
 }
 
-
-
-@Preview(showBackground = true)
 @Composable
-fun ShowLoginForm() {
-    LoginForm(navController = rememberNavController())
-}
-
-@Composable
-fun LoginForm(navController: NavController){
-
-    var user by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
+fun LoginForm(
+    username: String,
+    password: String,
+    onUsernameChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLoginClick: () -> Unit
+) {
     Card(
         colors = CardDefaults.cardColors(
-            contentColor = Color.White,
-            containerColor = Color.DarkGray
+            contentColor = Color.Black,
+            containerColor = Color.White
         ),
         modifier = Modifier
-            .padding(40.dp,0.dp)
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         Column(
             modifier = Modifier
                 .padding(20.dp)
-        ){
-            //Cargar recursos desde una URL
-            /*AsyncImage(
-                model  ="https://logoscarcas.net/wp-content/uploads/2020/12/GitHub-",
-                contentDescription ="Github logo",
-                contentScale=ContentScale.Fit
-            )*/
+                .fillMaxWidth()
+        ) {
+            // Input para el nombre de usuario
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                maxLines = 1,
-                value = user,
-                onValueChange = { user = it },
-                label = { Text("User") }
+                value = username,
+                onValueChange = onUsernameChange,
+                label = { Text("Username") },
+                modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // Input para la contraseña
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                maxLines = 1,
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = onPasswordChange,
                 label = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón de login
             FilledTonalButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 10.dp),
-                onClick = {
-                    navController.navigate("home")
-                }
+                    .padding(top = 8.dp),
+                onClick = onLoginClick
             ) {
+                Text("Login")
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             OutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(0.dp, 10.dp),
-                onClick = {
-                    navController.navigate("home")
-                }
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { /* Navegar a la pantalla de registro */ }
             ) {
                 Text("CREATE AN ACCOUNT")
             }
